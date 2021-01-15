@@ -1,0 +1,30 @@
+{
+  "name": "devdb",
+  "version": "0.0.0",
+  "description": "Data base application",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ave-student/devdb.git"
+  },
+  "keywords": [
+    "data",
+    "db",
+    "app",
+    "devices",
+    "metrology"
+  ],
+  "author": "ave6990",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ave-student/devdb/issues"
+  },
+  "homepage": "https://github.com/ave-student/devdb#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pug": "^3.0.0"
+  }
+}
