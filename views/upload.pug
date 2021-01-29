@@ -1,0 +1,10 @@
+form(name='upload')
+	div
+		label='Выберите файл:'
+		input(type='file' id='file' name='csv_file')
+		input(type='button' name='btn_upload' value='Загурзить в БД')
+	code(id='out')
+script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+script(defer)
+	include ../public/upload.js
+		

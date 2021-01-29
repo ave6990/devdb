@@ -9,40 +9,15 @@ gases.forEach((item) => {
 })
 
 const calc_n = () => {
-	form.elements.n_gas.value = gasList.options[gasList.selectedIndex].value	
+	form.elements.n_gas.value = gasList.options[gasList.selectedIndex].value
 }
-
-const append_field = (table, item) => {
-	let td_l = document.createElement('td')
-	td_l.innerHTML = item.label
-
-	let my_input = document.createElement('input')
-	my_input.setAttribute('name', item.name)
-	if (!(item.active == "")) {
-		my_input.setAttribute('disabled', '')
-	}
-
-	let td_i = document.createElement('td')
-	td_i.appendChild(my_input)
-
-	let tr = document.createElement('tr')
-	tr.appendChild(td_l)
-	tr.appendChild(td_i)
-	table.appendChild(tr)
-}
-
-const in_table = document.getElementById('data_tab')
-
-data_fields.forEach((item) => {
-	append_field(in_table, item)
-})
 
 const readData = () => {
 	let n = form.elements.n_gas.value
 	let x_source = form.elements.x_source.value
 	let x_set = form.elements.x_set.value
 	let q_set = form.elements.q_set.value
-	
+
 	return {
 				'n': n,
 				'x_source': x_source,
@@ -58,7 +33,7 @@ const calculate = (data) => {
 	let n_calc = 1 / (data.x_source / (data.n * 100) + (100 - data.x_source) / 100)
 	let qi_source = q_source / n_calc
 	let qi_diluent = q_diluent
-	
+
 	return {
 				'k': k,
 				'n_calc': n_calc,

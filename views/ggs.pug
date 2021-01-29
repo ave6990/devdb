@@ -1,12 +1,30 @@
 form(name='calcForm')
-	table(id='data_tab')
-		tr
-			td
-				label='Целевой компонент'
-			td
-				select(name= 'gas')
+	div
+		label(for='gas' class='label')
+			='Целевой компонент'
+		select(name= 'gas')
+	div
+		label(for='x_source' class='label')='Концентрация целевого компонента в смеси, % об.:'
+		input(type='text' name='x_source')
+	div
+		label(for='x_set' class='label')='Требуемая концентрация, % об.:'
+		input(type='text' name='x_set')
+	div
+		label(for='q_set' class='label')='Расход смеси, см<sup>3</sup>/мин:'
+		input(type='text' name='q_set')
+	div
+		label(for='n_gas' class='label')='Справочный поправочный коэффициент:'
+		input(type='text' name='n_gas' disabled)
+	div
+		label(for='n_calc' class='label')='Расчетный поправочный коэффициент:'
+		input(type='text' name='n_calc' disabled)
+	div
+		label(for='qi_source' class='label')='Расход исходной смеси, см<sup>3</sup>/мин:'
+		input(type='text' name='qi_source' disabled)
+	div
+		label(for='qi_diluent' class='label')='Расход разбавителя, см<sup>3</sup>/мин:'
+		input(type='text' name='qi_diluent' disabled)
 	input(type='button' id='calcButton' value='Расчитать')
 script(defer)
 	include ../middleware/ggs/gases.js
-	include ../middleware/ggs/forms.js
 	include ../middleware/ggs/ggs.js
