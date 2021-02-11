@@ -13,8 +13,8 @@ module.exports = (app, db) => {
 			header: 'Выгрузка данных в БД',
 			content: content})
 	})
-	app.post('/upload', (req, res) => {
-		csv.parse(req.body.csv, {
+	app.post('/upload', async (req, res) => {
+		await csv.parse(req.body.csv, {
 			comment: '#',
 			delimiter: ';',
 		}, (err, out) => {
@@ -22,15 +22,14 @@ module.exports = (app, db) => {
 				res.send({'error': 'An error has occured.'})
 			} else {
 				const data = csvToJSON(out)
-				let [first, _] = data
-				console.log(first)
-				db.collection('reference_material')
-				.insertOne(first, (err, res) => {
+				db.collection('journal')
+				.insertMany(data, (err, response) => {
 					if (err) {
 						console.log('error!!!!!!!!!')
+						console.log(err)
 						res.send({'error': 'An error has occured'})
 					} else {
-						res.send(res.ops[0])
+						console.log(response.ops[0])
 					}
 				})
 			}

@@ -5,7 +5,7 @@ const app = express()
 const port = 3000
 
 app.set('view engine', 'pug')
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb', extended: true, parameterLimit: 50000}))
 
 const MongoClient = require('mongodb').MongoClient
 const util = require('util')
@@ -32,5 +32,5 @@ MongoClient.connect(url, options, (err, client) => {
 	app.listen(port, () => {
 		console.log('Devices data base run.')
 	})
-	client.close()
+//	client.close()
 })
