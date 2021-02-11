@@ -13,15 +13,16 @@ module.exports = (app, db) => {
 			header: 'Выгрузка данных в БД',
 			content: content})
 	})
-	app.post('/upload', async (req, res) => {
-		await csv.parse(req.body.csv, {
+	app.post('/upload', (req, res) => {
+		csv.parse(req.body.csv, {
 			comment: '#',
 			delimiter: ';',
-		}, (err, out) => {
+		}, async (err, out) => {
 			if (err) {
 				res.send({'error': 'An error has occured.'})
 			} else {
-				const data = csvToJSON(out)
+				const data = await csvToJSON(out)
+				console.log(data)
 				db.collection('journal')
 				.insertMany(data, (err, response) => {
 					if (err) {
@@ -34,7 +35,7 @@ module.exports = (app, db) => {
 				})
 			}
 		})
-//		res.redirect('/upload')
+		res.redirect('/upload')
 	})
 	app.get('/ggs', (req, res) => {
 		let content = pug.renderFile('./views/ggs.pug')
