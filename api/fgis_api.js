@@ -19,7 +19,6 @@ const get_url = (url, filter_obj) => {
 		for (let item in filter_obj) {
 			if (typeof(filter_obj[item]) == 'object') {
 				for (let opt in filter_obj[item]) {
-//					url += `${fq(item, opt, filter_obj[item][opt])}&`
 					url += `${item}=${opt}:${filter_obj[item][opt]}&`
 				}
 			} else {
@@ -28,10 +27,6 @@ const get_url = (url, filter_obj) => {
 		}
 	}
 	return url
-}
-
-const fq = (param, option, value) => {
-	return `${param}=${option}:${value}`
 }
 
 const res_url = 'https://fgis.gost.ru/fundmetrology/cm/icdb/vri/select'

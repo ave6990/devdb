@@ -3,14 +3,13 @@ const button = form.elements.btn_upload
 
 button.onclick = async () => {
 	const file = document.getElementById('file').files[0]
+//	const data = await file.text()
 	const data = await get_data(file)
-	const db_listbox = $('#db_listbox')
-//	const db_name = db_listbox[db_listbox.selectedIndex].value
-
 	$.ajax({
 		url: 'upload',
 		method: 'POST',
 		cache: false,
+		dataType: 'json',
 		contentType: 'application/json',
 		encoding: 'utf-8',
 		data: JSON.stringify({
@@ -20,7 +19,7 @@ button.onclick = async () => {
 		success: (data) => {
 			console.log('Successfull upload.')
 		},
-		error: (err) => {
+		error: () => {
 			console.log('Error occured')
 		},
 		complete: () => {
@@ -32,11 +31,12 @@ button.onclick = async () => {
 const get_data = async (file) => {
 	const suffix = (name) => {
 		const s_name = name.split('.')
+		console.log(s_name)
 		return s_name[s_name.length - 1]
 	}
 
 	if (['xlsx', 'xls'].indexOf(suffix(file.name)) != -1) {
-		console.log('Not supported yet.')
+		
 	} else {
 		return file.text()
 	}

@@ -7,6 +7,9 @@ module.exports = (app, db) => {
 			header: 'My test app!!!',
 			content: 'Here must be content...'})
 	})
+	app.get('/from_fgis', (req, res) => {
+
+	})
 	app.get('/upload', (req, res) => {
 		let content = pug.renderFile('./views/upload.pug')
 		res.render('index', {title: 'Выгрузка данных в БД',
@@ -23,16 +26,16 @@ module.exports = (app, db) => {
 			} else {
 				const data = await csvToJSON(out)
 				console.log(data)
-				db.collection('journal')
-				.insertMany(data, (err, response) => {
-					if (err) {
-						console.log('error!!!!!!!!!')
-						console.log(err)
-						res.send({'error': 'An error has occured'})
-					} else {
-						console.log(response.ops[0])
-					}
-				})
+//				db.collection(req.body.name)
+//				.insertMany(data, (err, response) => {
+//					if (err) {
+//						console.log('error!!!!!!!!!')
+// 					console.log(err)
+//						res.send({'error': 'An error has occured'})
+//					} else {
+//						console.log(response.ops[0])
+//					}
+//				})
 			}
 		})
 		res.redirect('/upload')
@@ -57,3 +60,4 @@ const csvToJSON = (csv) => {
 	})
 	return data
 }
+

@@ -1,5 +1,5 @@
-const form = document.forms.upload
-const button = form.elements.btn_upload
+const form = document.forms.from_fgis
+const button = form.elements.btn_run
 
 button.onclick = async () => {
 	const file = document.getElementById('file').files[0]
