@@ -1,0 +1,29 @@
+form(name='from_fgis')
+	div
+		label(class='label')
+			='Организация поверитель:'
+		input(type='text' name='tb_organisation')
+	div
+		label(class='label')
+			='Год поверки:'
+		input(type='text' name='tb_verification_year')
+	div
+		label(class='label')
+			='Регистрационный номер СИ:'
+		input(type='text' name='tb_mi_type_number')
+	div
+		label(class='label')
+			='Заводской номер СИ:'
+		input(type='text' name='tb_mi_serial_number')
+	div
+		label(for='verifier' class='label')
+			='Поверитель:'
+		select(name='verifier' id='verifier')
+	div
+		input(type='button' name='btn_from_fgis' value='Загурзить данные из ФГИС')
+	div
+		table(id='out_data')
+script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
+script(defer)
+	include ../public/from_fgis.js

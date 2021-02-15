@@ -19,6 +19,7 @@ button.onclick = async () => {
 		}),
 		success: (data) => {
 			console.log('Successfull upload.')
+			console.log(data)
 		},
 		error: (err) => {
 			console.log('Error occured')

@@ -1,43 +1,41 @@
 const form = document.forms.from_fgis
-const button = form.elements.btn_run
+const button = form.elements.btn_from_fgis
+
+// XLSX.json_to_xlsx Данные из ФГИС вывести на страницу в виде таблицы.
 
 button.onclick = async () => {
-	const file = document.getElementById('file').files[0]
-	const data = await get_data(file)
-	const db_listbox = $('#db_listbox')
-//	const db_name = db_listbox[db_listbox.selectedIndex].value
+	const name_listbox = form.elements.verifier
+//	const name = name_listbox[name_listbox.selectedIndex].value
+	const res_filter = {
+		fq: {
+			verification_year: form.elements.tb_verification_year.value,
+			org_title: encodeURI(`*${form.elements.tb_organisation.value}*`)
+		},
+		q: '*',
+//		fl: 'vri_id,org_title,mi.mitnumber,mi.mititle,mi.mitype,mi.modification,mi.number,verification_date,valid_date,applicability,result_docnum',
+		sort: 'verification_date+desc,org_title+asc',
+		rows: 20,
+		start: 0,
+	}
 
 	$.ajax({
-		url: 'upload',
+		url: 'from_fgis',
 		method: 'POST',
 		cache: false,
 		contentType: 'application/json',
 		encoding: 'utf-8',
 		data: JSON.stringify({
-			name: file.name,
-			csv: data
+			filter: res_filter,
 		}),
-		success: (data) => {
+		success: async (data) => {
 			console.log('Successfull upload.')
+			await console.log(data)
 		},
 		error: (err) => {
-			console.log('Error occured')
+			console.log('Error occured: public/from_fgis.js')
 		},
 		complete: () => {
 			console.log('Complete')
 		}
 	})
-}
-
-const get_data = async (file) => {
-	const suffix = (name) => {
-		const s_name = name.split('.')
-		return s_name[s_name.length - 1]
-	}
-
-	if (['xlsx', 'xls'].indexOf(suffix(file.name)) != -1) {
-		console.log('Not supported yet.')
-	} else {
-		return file.text()
-	}
 }

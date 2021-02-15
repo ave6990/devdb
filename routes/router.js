@@ -1,5 +1,6 @@
 const pug = require('pug')
 const csv = require('csv')
+const fgis_api = require('../api/fgis_api')
 
 module.exports = (app, db) => {
 	app.get('/', (req, res) => {
@@ -8,7 +9,15 @@ module.exports = (app, db) => {
 			content: 'Here must be content...'})
 	})
 	app.get('/from_fgis', (req, res) => {
-
+		let content = pug.renderFile('./views/from_fgis.pug')
+		res.render('index', {title: 'Чтение данных из ФГИС',
+			header: 'Чтение данных из ФГИС',
+			content: content})
+	})
+	app.post('/from_fgis', async (req, res) => {
+		const url_filter = req.body.filter
+		const data = await fgis_api.results(url_filter)
+		res.send(data)
 	})
 	app.get('/upload', (req, res) => {
 		let content = pug.renderFile('./views/upload.pug')
@@ -26,6 +35,7 @@ module.exports = (app, db) => {
 			} else {
 				const data = await csvToJSON(out)
 				console.log(data)
+				res.send(data)
 //				db.collection(req.body.name)
 //				.insertMany(data, (err, response) => {
 //					if (err) {
@@ -38,7 +48,7 @@ module.exports = (app, db) => {
 //				})
 			}
 		})
-		res.redirect('/upload')
+//		res.redirect('/upload')
 	})
 	app.get('/ggs', (req, res) => {
 		let content = pug.renderFile('./views/ggs.pug')
