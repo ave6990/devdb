@@ -16,7 +16,24 @@ module.exports = (app, db) => {
 	})
 	app.post('/from_fgis', async (req, res) => {
 		const url_filter = req.body.filter
-		const data = await fgis_api.results(url_filter)
+		let data = {}
+		data.fgis = await fgis_api.results(url_filter)
+
+		if (req.body.journal != '') {
+			csv.parse(req.body.journal, {
+				comment: '#',
+				delimiter: ';',
+			}, async (err, out) => {
+				if (err) {
+					res.send({'error': 'An error has occured.'})
+				} else {
+					data.jouranl = await csvToJSON(out)
+				}
+			})
+		} else {
+			data.journal = []
+		}
+		console.log(data)
 		res.send(data)
 	})
 	app.get('/upload', (req, res) => {
