@@ -16,24 +16,19 @@ module.exports = (app, db) => {
 	})
 	app.post('/from_fgis', async (req, res) => {
 		const url_filter = req.body.filter
-		let data = {}
+		const data = {}
 		data.fgis = await fgis_api.results(url_filter)
 
 		if (req.body.journal != '') {
-			csv.parse(req.body.journal, {
-				comment: '#',
-				delimiter: ';',
-			}, async (err, out) => {
-				if (err) {
-					res.send({'error': 'An error has occured.'})
-				} else {
-					data.jouranl = await csvToJSON(out)
-				}
-			})
+			try {
+				data.journal = await csvParse(req.body.journal)
+			} catch (err) {
+				console.log(err)
+			}
 		} else {
 			data.journal = []
 		}
-		console.log(data)
+		filterRecords(data)
 		res.send(data)
 	})
 	app.get('/upload', (req, res) => {
@@ -50,7 +45,7 @@ module.exports = (app, db) => {
 			if (err) {
 				res.send({'error': 'An error has occured.'})
 			} else {
-				const data = await csvToJSON(out)
+				const data = await arrayToJson(out)
 				console.log(data)
 				res.send(data)
 //				db.collection(req.body.name)
@@ -75,7 +70,28 @@ module.exports = (app, db) => {
 	})
 }
 
-const csvToJSON = (csv) => {
+const filterRecords = (data) => {
+	let res = []
+
+	data.journal.forEach((rec) => {
+		const temp = data.fgis.docs.filter((item) => {
+			console.log(`${rec['registry_number']} == ${item['mi.mitnumber']}`)
+			if (rec['registry_number'] == item['mi.mitnumber']) {
+				if (rec['serial_number'] == item['mi.number']) {
+					return true
+				} else {
+					return false
+				}
+			} else {
+				return false
+			}
+		})
+//		console.log(temp)
+		res = res.concat(temp)
+	})
+}
+
+const arrayToJson = (csv) => {
 	let [header, ...records] = csv
 	let data = []
 
@@ -88,3 +104,47 @@ const csvToJSON = (csv) => {
 	return data
 }
 
+const csvParse = (data, delimiter=';') => {
+	return new Promise((resolve, reject) => {
+		csv.parse(data, {
+			comment: '#',
+			delimiter: delimiter,
+		}, (err, arr) => {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(arrayToJson(arr))
+			}
+		})
+
+	})
+}
+
+//const csvToArray = (csv, delimiter = ',') => {
+//	const pattern = new RegExp(
+//		(
+//			"(\\" + delimiter + "|\\r?\\n|\\r|^)" +
+//			"(?:\"([^\]*(?:\"\"[^\"]*)*)\"|" +
+//			"([^\"\\" + delimiter + "\\r\\n]*))"
+//		),
+//		"gi"
+//	)
+//
+//	let res = [[]]
+//	let matches = null
+//
+//	while (matches = pattern.exec(csv)) {
+//		let matchedDelimiter = matches[1]
+//		if (matchedDelimiter.length && matchedDelimiter !== delimiter) {
+//			res.push([]);
+//		}
+//		let matchedValue
+//		if (matches[2]) {
+//			matchedValue = matches[2].replace(new RegExp("\"\"", "g"), "\"")
+//		} else {
+//			matchedValue = matches[3]
+//		}
+//		res[res.length - 1].push(matchedValue)
+//	}
+//	return res
+//}

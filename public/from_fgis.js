@@ -14,8 +14,6 @@ let config = {
 	pages_count: 0
 }
 
-// XLSX.json_to_xlsx Данные из ФГИС вывести на страницу в виде таблицы.
-
 btn_reset.onclick = async() => {
 	config.page_num = 0
 	config.records_count = 0
@@ -50,11 +48,24 @@ const renderXLSX = async (data) => {
 //	const workSheet = await XLSX.utils.json_to_sheet(data)
 	let result
 	let records = await data.fgis.docs
-	if (data.journal.len > 0) {
-		console.log(`${data.journal.len} records upload to Journal. `)
-	} else {
-		result = records
-	}
+//	console.log(data.journal)
+
+//	if (data.journal.len > 0) {
+//		data.journal.foreach((rec) => {
+//			result = data.fgis.filter((item) => {
+//				if (item['mi.mitnumber'] == rec['registry_number'] &&
+//					item['mi.number'] == rec['serial_number'])
+//					return true
+//				} else {
+//					return false
+//				}
+//			})
+//			console.log(result)
+//		})
+//	} else {
+//		result = records
+//	}
+
 	const workSheet = await XLSX.utils.aoa_to_sheet(json_to_aoa(data.fgis.docs))
 	const table = await XLSX.utils.sheet_to_html(workSheet)
 	$('#out_data').html(table)
@@ -136,4 +147,17 @@ btn_search.onclick = async () => {
 btn_upload.onclick = async () => {
 	const file = document.getElementById('file').files[0]
 	journal = await file.text()
+//	console.log(await get_json(file))
+}
+
+const get_json = (file) => {
+	return new Promise((resolve, reject) => {
+		const reader = new FileReader()
+		reader.onload = (obj) => {
+			const data = obj.target.result
+			const wb = XLSX.read(data, {type: 'binary'})
+			resolve(XLSX.utils.sheet_to_json(wb.Sheets.Sheet1))
+		}
+		reader.readAsBinaryString(file)
+	})
 }

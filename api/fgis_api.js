@@ -1,4 +1,3 @@
-//const urlencode = require('urlencode')
 const axios = require('axios')
 
 const results = async (filter_obj) => {
