@@ -22,13 +22,28 @@ module.exports = (app, db) => {
 		if (req.body.journal != '') {
 			try {
 				data.journal = await csvParse(req.body.journal)
+				let temp_data = []
+				data.fgis.docs = filterRecords(data)
+//				data.journal.forEach((rec) => {
+//					temp = data.fgis.docs.filter((item) => {
+//						if (item['mi.mitnumber'] == rec['registry_number'] &&
+//							item['mi.number'] == rec['serial_number']) {
+//							return true
+//						} else {
+//							return false
+//						}
+//					})
+//					temp_data = temp_data.concat(temp)
+//				})
+//				data.fgis.docs = temp_data
 			} catch (err) {
 				console.log(err)
 			}
 		} else {
 			data.journal = []
 		}
-		filterRecords(data)
+		data.fgis.numFound = data.fgis.docs.length
+//		filterRecords(data)
 		res.send(data)
 	})
 	app.get('/upload', (req, res) => {
@@ -71,24 +86,19 @@ module.exports = (app, db) => {
 }
 
 const filterRecords = (data) => {
-	let res = []
-
+	let temp_data = []
 	data.journal.forEach((rec) => {
-		const temp = data.fgis.docs.filter((item) => {
-			console.log(`${rec['registry_number']} == ${item['mi.mitnumber']}`)
-			if (rec['registry_number'] == item['mi.mitnumber']) {
-				if (rec['serial_number'] == item['mi.number']) {
-					return true
-				} else {
-					return false
-				}
+		temp = data.fgis.docs.filter((item) => {
+			if (item['mi.mitnumber'] == rec['registry_number'] &&
+				item['mi.number'] == rec['serial_number']) {
+				return true
 			} else {
 				return false
 			}
 		})
-//		console.log(temp)
-		res = res.concat(temp)
+		temp_data = temp_data.concat(temp)
 	})
+	return temp_data
 }
 
 const arrayToJson = (csv) => {

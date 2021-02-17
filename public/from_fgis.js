@@ -19,7 +19,7 @@ btn_reset.onclick = async() => {
 	config.records_count = 0
 	config.pages_count = 0
 	show_page_num()
-	journal = []
+	journal = ''
 	$('#out_data').html('')
 }
 
@@ -45,32 +45,12 @@ const get_record_fif = (num) => {
 }
 
 const renderXLSX = async (data) => {
-//	const workSheet = await XLSX.utils.json_to_sheet(data)
 	let result
 	let records = await data.fgis.docs
-//	console.log(data.journal)
-
-//	if (data.journal.len > 0) {
-//		data.journal.foreach((rec) => {
-//			result = data.fgis.filter((item) => {
-//				if (item['mi.mitnumber'] == rec['registry_number'] &&
-//					item['mi.number'] == rec['serial_number'])
-//					return true
-//				} else {
-//					return false
-//				}
-//			})
-//			console.log(result)
-//		})
-//	} else {
-//		result = records
-//	}
-
 	const workSheet = await XLSX.utils.aoa_to_sheet(json_to_aoa(data.fgis.docs))
 	const table = await XLSX.utils.sheet_to_html(workSheet)
 	$('#out_data').html(table)
 }
-
 btn_forward.onclick = async () => {
 	if (config.rows_count < config.records_count && config.page_num * config.rows_count < config.records_count) {
 		console.log('Process next page')
@@ -114,8 +94,8 @@ btn_search.onclick = async () => {
 		q: '*',
 		fl: 'vri_id,mi.mitnumber,mi.mitype,mi.modification,mi.number,verification_date,valid_date,result_docnum',
 		sort: 'verification_date+desc,org_title+asc',
-		rows: config.rows_count,
-		start: config.rows_count * config.page_num,
+		rows: 99000,	//config.rows_count,
+		start: 0,		//config.rows_count * config.page_num,
 	}
 
 	$.ajax({
@@ -154,8 +134,12 @@ const get_json = (file) => {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader()
 		reader.onload = (obj) => {
+			console.log(obj)
 			const data = obj.target.result
+			console.log(data)
+			// some error
 			const wb = XLSX.read(data, {type: 'binary'})
+			console.log(wb)
 			resolve(XLSX.utils.sheet_to_json(wb.Sheets.Sheet1))
 		}
 		reader.readAsBinaryString(file)
