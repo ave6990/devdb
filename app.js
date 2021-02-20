@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const router = require('./routes/router.js')
 const app = express()
-const port = 3000
+const port = 3300
 
 app.set('view engine', 'pug')
 app.use(bodyParser.json({limit: '50mb', extended: true, parameterLimit: 50000}))

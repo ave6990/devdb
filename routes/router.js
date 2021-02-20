@@ -8,12 +8,14 @@ module.exports = (app, db) => {
 			header: 'My test app!!!',
 			content: 'Here must be content...'})
 	})
+
 	app.get('/from_fgis', (req, res) => {
 		let content = pug.renderFile('./views/from_fgis.pug')
 		res.render('index', {title: 'Чтение данных из ФГИС',
 			header: 'Чтение данных из ФГИС',
 			content: content})
 	})
+
 	app.post('/from_fgis', async (req, res) => {
 		const url_filter = req.body.filter
 		const data = {}
@@ -22,20 +24,7 @@ module.exports = (app, db) => {
 		if (req.body.journal != '') {
 			try {
 				data.journal = await csvParse(req.body.journal)
-				let temp_data = []
 				data.fgis.docs = filterRecords(data)
-//				data.journal.forEach((rec) => {
-//					temp = data.fgis.docs.filter((item) => {
-//						if (item['mi.mitnumber'] == rec['registry_number'] &&
-//							item['mi.number'] == rec['serial_number']) {
-//							return true
-//						} else {
-//							return false
-//						}
-//					})
-//					temp_data = temp_data.concat(temp)
-//				})
-//				data.fgis.docs = temp_data
 			} catch (err) {
 				console.log(err)
 			}
@@ -43,40 +32,37 @@ module.exports = (app, db) => {
 			data.journal = []
 		}
 		data.fgis.numFound = data.fgis.docs.length
-//		filterRecords(data)
 		res.send(data)
 	})
+
 	app.get('/upload', (req, res) => {
 		let content = pug.renderFile('./views/upload.pug')
 		res.render('index', {title: 'Выгрузка данных в БД',
 			header: 'Выгрузка данных в БД',
 			content: content})
 	})
-	app.post('/upload', (req, res) => {
-		csv.parse(req.body.csv, {
-			comment: '#',
-			delimiter: ';',
-		}, async (err, out) => {
-			if (err) {
-				res.send({'error': 'An error has occured.'})
-			} else {
-				const data = await arrayToJson(out)
-				console.log(data)
-				res.send(data)
-//				db.collection(req.body.name)
-//				.insertMany(data, (err, response) => {
-//					if (err) {
-//						console.log('error!!!!!!!!!')
-// 					console.log(err)
-//						res.send({'error': 'An error has occured'})
-//					} else {
-//						console.log(response.ops[0])
-//					}
-//				})
-			}
-		})
+
+	app.post('/upload', async (req, res) => {
+		try {
+			const data = await csvParse(req.body.csv)
+			res.sennd(data)
+		} catch (err) {
+			console.log('An error has occured')
+			console.log(err)
+		}
+//		db.collection(req.body.name)
+//		.insertMany(data, (err, response) => {
+//			if (err) {
+//				console.log('error!!!!!!!!!')
+//			console.log(err)
+//				res.send({'error': 'An error has occured'})
+//			} else {
+//				console.log(esponse.ops[0])
+//			}
+//		})
 //		res.redirect('/upload')
 	})
+
 	app.get('/ggs', (req, res) => {
 		let content = pug.renderFile('./views/ggs.pug')
 		res.render('index', {title: 'ГГС-03-03',
@@ -88,6 +74,8 @@ module.exports = (app, db) => {
 const filterRecords = (data) => {
 	let temp_data = []
 	data.journal.forEach((rec) => {
+		rec['fgis_result_docnum'] = ''
+		rec['fgis_vri_id'] = ''
 		temp = data.fgis.docs.filter((item) => {
 			if (item['mi.mitnumber'] == rec['registry_number'] &&
 				item['mi.number'] == rec['serial_number']) {
@@ -96,10 +84,34 @@ const filterRecords = (data) => {
 				return false
 			}
 		})
-		temp_data = temp_data.concat(temp)
+		temp.forEach((item) => {
+			if (rec['fgis_result_docnum'] != '') {
+				rec['fgis_result_docnum'] = `${rec['fgis_result_docnum']}; ${item.result_docnum}`
+				rec['fgis_vri_id'] = `${rec['fgis_vri_id']}; ${item.vri_id}`
+			} else {
+				rec['fgis_result_docnum'] = item.result_docnum
+				rec['fgis_vri_id'] = item.vri_id
+			}
+		})
 	})
-	return temp_data
+	return data.journal
 }
+
+//const filterRecords = (data) => {
+//	let temp_data = []
+//	data.journal.forEach((rec) => {
+//		temp = data.fgis.docs.filter((item) => {
+//			if (item['mi.mitnumber'] == rec['registry_number'] &&
+//				item['mi.number'] == rec['serial_number']) {
+//				return true
+//			} else {
+//				return false
+//			}
+//		})
+//		temp_data = temp_data.concat(temp)
+//	})
+//	return temp_data
+//}
 
 const arrayToJson = (csv) => {
 	let [header, ...records] = csv

@@ -1,9 +1,7 @@
 const form = document.forms.from_fgis
 const btn_search = form.elements.btn_from_fgis
-const btn_upload = form.elements.btn_upload
 const btn_forward = form.elements.btn_forward
 const btn_back = form.elements.btn_back
-const btn_reset = form.elements.btn_reset
 const tb_page = form.elements.tb_page
 let journal = ''
 
@@ -14,15 +12,6 @@ let config = {
 	pages_count: 0
 }
 
-btn_reset.onclick = async() => {
-	config.page_num = 0
-	config.records_count = 0
-	config.pages_count = 0
-	show_page_num()
-	journal = ''
-	$('#out_data').html('')
-}
-
 const show_page_num = () => {
 	tb_page.value = config.page_num + 1
 	$('#lbl_page').html(` из ${parseInt(config.records_count / config.rows_count) + 1}`)
@@ -31,11 +20,11 @@ const show_page_num = () => {
 const json_to_aoa = (data) => {
 	let res = []
 	let i = 0
-	res[i] = ['Номер ГРСИ', 'Тип', 'Модификация', 'Зав. №', 'Документ', 'Дата поверки', 'Годен до', 'Запись в ФИФ']
+	res[i] = ['№ п/п', 'Номер счета', 'Модификация', 'Номер_ГРСИ', 'Зав. №', 'Год выпуска', 'Номер документа ФИФ', 'Запись в ФИФ']
 	data.forEach((row) => {
 		i += 1
-		res[i] = [row['mi.mitnumber'], row['mi.mitype'], row['mi.modification'], row['mi.number'],
-			row['result_docnum'], row['verification_date'], row['valid_date'], get_record_fif(row['vri_id'])]
+		res[i] = [row['number'], row['count_number'], row['modification'], row['registry_number'], row['serial_number'],
+			row['manufacture_year'], row['fgis_result_docnum'], get_record_fif(row['fgis_vri_id'])]
 	})
 	return res
 }
@@ -49,8 +38,10 @@ const renderXLSX = async (data) => {
 	let records = await data.fgis.docs
 	const workSheet = await XLSX.utils.aoa_to_sheet(json_to_aoa(data.fgis.docs))
 	const table = await XLSX.utils.sheet_to_html(workSheet)
+	$('#upload_comment').html(`Найдено ${data.fgis.numFound} записей.`)
 	$('#out_data').html(table)
 }
+
 btn_forward.onclick = async () => {
 	if (config.rows_count < config.records_count && config.page_num * config.rows_count < config.records_count) {
 		console.log('Process next page')
@@ -83,7 +74,6 @@ tb_page.onchange = async () => {
 
 btn_search.onclick = async () => {
 	const name_listbox = form.elements.verifier
-//	const name = name_listbox[name_listbox.selectedIndex].value
 	const res_filter = {
 		fq: {
 			verification_year: form.elements.tb_verification_year.value,
@@ -112,23 +102,24 @@ btn_search.onclick = async () => {
 			console.log('Successfull upload.')
 			config.records_count = data.fgis.numFound
 			show_page_num()
-//			await renderXLSX(data.fgis.docs)
 			await renderXLSX(data)
 		},
 		error: (err) => {
+			$('#upload_comment').html('Ошибка выгрузки!')
 			console.log('Error occured: public/from_fgis.js')
 		},
 		complete: () => {
 			console.log('Complete')
+			$('#file').value = null
 		}
 	})
 }
 
-btn_upload.onclick = async () => {
+$('#file').change(async () => {
 	const file = document.getElementById('file').files[0]
 	journal = await file.text()
-//	console.log(await get_json(file))
-}
+	console.log('Uploaded')
+})
 
 const get_json = (file) => {
 	return new Promise((resolve, reject) => {
