@@ -121,18 +121,17 @@ $('#file').change(async () => {
 	console.log('Uploaded')
 })
 
-const get_json = (file) => {
+const get_json = async (file) => {
 	return new Promise((resolve, reject) => {
 		const reader = new FileReader()
 		reader.onload = (obj) => {
 			console.log(obj)
-			const data = obj.target.result
+			const data = new Uint8Array(obj.target.result)
 			console.log(data)
-			// some error
-			const wb = XLSX.read(data, {type: 'binary'})
+			const wb = XLSX.read(data, {type: 'array'})
 			console.log(wb)
 			resolve(XLSX.utils.sheet_to_json(wb.Sheets.Sheet1))
 		}
-		reader.readAsBinaryString(file)
+		reader.readAsArrayBuffer(file)
 	})
 }

@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const router = require('./routes/router.js')
+const config = require('./config.js')
 const app = express()
 const port = 3300
 
@@ -8,16 +9,7 @@ app.set('view engine', 'pug')
 app.use(bodyParser.json({limit: '50mb', extended: true, parameterLimit: 50000}))
 
 const MongoClient = require('mongodb').MongoClient
-const util = require('util')
-const url = util.format(
-	'mongodb://%s:%s@%s:%s/%s',
-	'admin',
-	'pass',
-	'localhost',
-	'27017',
-	'devices'
-)
-
+const url = `mongodb://${config.user}:${config.password}@${config.host}:${config.port}/${config.db}`
 const options = {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -34,3 +26,4 @@ MongoClient.connect(url, options, (err, client) => {
 	})
 //	client.close()
 })
+

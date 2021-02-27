@@ -9,6 +9,19 @@ module.exports = (app, db) => {
 			content: 'Here must be content...'})
 	})
 
+	app.get('/update_fgis', (req, res) => {
+//		db.collection('fgis')
+//		.insertMany(data, (err, response) => {
+//			if (err) {
+//				console.log('error!!!!!!!!!')
+//			console.log(err)
+//				res.send({'error': 'An error has occured'})
+//			} else {
+//				console.log(response.ops[0])
+//			}
+//		})
+	})
+
 	app.get('/from_fgis', (req, res) => {
 		let content = pug.renderFile('./views/from_fgis.pug')
 		res.render('index', {title: 'Чтение данных из ФГИС',
@@ -19,7 +32,7 @@ module.exports = (app, db) => {
 	app.post('/from_fgis', async (req, res) => {
 		const url_filter = req.body.filter
 		const data = {}
-		data.fgis = await fgis_api.results(url_filter)
+		data.fgis = await fgis_api.verification_results(url_filter)
 
 		if (req.body.journal != '') {
 			try {
@@ -57,7 +70,7 @@ module.exports = (app, db) => {
 //			console.log(err)
 //				res.send({'error': 'An error has occured'})
 //			} else {
-//				console.log(esponse.ops[0])
+//				console.log(response.ops[0])
 //			}
 //		})
 //		res.redirect('/upload')
@@ -97,22 +110,6 @@ const filterRecords = (data) => {
 	return data.journal
 }
 
-//const filterRecords = (data) => {
-//	let temp_data = []
-//	data.journal.forEach((rec) => {
-//		temp = data.fgis.docs.filter((item) => {
-//			if (item['mi.mitnumber'] == rec['registry_number'] &&
-//				item['mi.number'] == rec['serial_number']) {
-//				return true
-//			} else {
-//				return false
-//			}
-//		})
-//		temp_data = temp_data.concat(temp)
-//	})
-//	return temp_data
-//}
-
 const arrayToJson = (csv) => {
 	let [header, ...records] = csv
 	let data = []
@@ -141,32 +138,3 @@ const csvParse = (data, delimiter=';') => {
 
 	})
 }
-
-//const csvToArray = (csv, delimiter = ',') => {
-//	const pattern = new RegExp(
-//		(
-//			"(\\" + delimiter + "|\\r?\\n|\\r|^)" +
-//			"(?:\"([^\]*(?:\"\"[^\"]*)*)\"|" +
-//			"([^\"\\" + delimiter + "\\r\\n]*))"
-//		),
-//		"gi"
-//	)
-//
-//	let res = [[]]
-//	let matches = null
-//
-//	while (matches = pattern.exec(csv)) {
-//		let matchedDelimiter = matches[1]
-//		if (matchedDelimiter.length && matchedDelimiter !== delimiter) {
-//			res.push([]);
-//		}
-//		let matchedValue
-//		if (matches[2]) {
-//			matchedValue = matches[2].replace(new RegExp("\"\"", "g"), "\"")
-//		} else {
-//			matchedValue = matches[3]
-//		}
-//		res[res.length - 1].push(matchedValue)
-//	}
-//	return res
-//}

@@ -2,9 +2,9 @@
   "name": "devdb",
   "version": "0.1.0",
   "description": "Data base application",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "test"
+    "test": "mocha *.test.js"
   },
   "repository": {
     "type": "git",
@@ -31,5 +31,9 @@
     "mongodb": "^3.6.3",
     "pug": "^3.0.0",
     "urlencode": "^1.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.0",
+    "mocha": "^8.3.0"
   }
 }
