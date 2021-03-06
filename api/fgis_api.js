@@ -1,9 +1,9 @@
 //const urlencode = require('urlencode')
 const axios = require('axios')
 
-const verification_results = async (filter_obj) => {
+const verificationResults = async (filter_obj) => {
 	try {
-		const url = get_url('https://fgis.gost.ru/fundmetrology/cm/icdb/vri/select', filter_obj)
+		const url = getUrl('https://fgis.gost.ru/fundmetrology/cm/icdb/vri/select', filter_obj)
 		const res = await axios.get(url)
 //		console.log(res.data.response)
 		return res.data.response
@@ -13,7 +13,7 @@ const verification_results = async (filter_obj) => {
 	}
 }
 
-const all_records = async (filter_obj) => {
+const allRecords = async (filter_obj) => {
 	try {
 		let rows = 10
 		let start = 0
@@ -25,11 +25,11 @@ const all_records = async (filter_obj) => {
 			start: start,
 		}
 	} catch (err) {
-		console.log('fgis_api.js [all_records()] error!')
+		console.log('fgis_api.js [allRecords()] error!')
 	}
 }
 
-const get_url = (url, filter_obj) => {
+const getUrl = (url, filter_obj) => {
 	if (filter_obj) {
 		url += '?'
 
@@ -66,4 +66,4 @@ const get_url = (url, filter_obj) => {
 //
 //test()
 
-module.exports.verification_results = verification_results
+module.exports = {verificationResults}
