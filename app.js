@@ -8,7 +8,10 @@ const port = 3300
 
 const app = express()
 app.set('view engine', 'pug')
-app.use(bodyParser.json({limit: '50mb', extended: true, parameterLimit: 50000}))
+//app.use(bodyParser.json({limit: '50mb', extended: true, parameterLimit: 50000}))
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.text())
+app.use(bodyParser.json({type: 'application/json'}))
 
 //const MongoClient = require('mongodb').MongoClient
 //const url = `mongodb://${config.user}:${config.password}@${config.host}:${config.port}/${config.db}`
@@ -41,3 +44,6 @@ app.route('/upload')
 app.listen(port, () => {
 	console.log(`App started at port: ${port}`)
 })
+
+// for testing app
+module.exports = app
