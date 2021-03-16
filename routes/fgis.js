@@ -66,8 +66,7 @@ const uploadCSV = async (req, res) => {
 		console.log('An error has occured')
 		console.log(err)
 	}
-//	db.collection(req.body.name)
-//	.insertMany(data, (err, response) => {
+//	db.collection(req.body.name) .insertMany(data, (err, response) => {
 //		if (err) {
 //			console.log('error!!!!!!!!!')
 //		console.log(err)

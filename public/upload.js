@@ -4,7 +4,7 @@ const button = form.elements.btn_upload
 button.onclick = async () => {
 	const file = document.getElementById('file').files[0]
 	const data = await get_data(file)
-	const db_listbox = $('#db_listbox')
+//	const db_listbox = $('#db_listbox')
 //	const db_name = db_listbox[db_listbox.selectedIndex].value
 
 	$.ajax({
@@ -18,11 +18,11 @@ button.onclick = async () => {
 			csv: data
 		}),
 		success: (data) => {
-			console.log('Successfull upload.')
+			$('#status_info').html('Successfull upload.')
 			console.log(data)
 		},
 		error: (err) => {
-			console.log('Error occured')
+			$('#status_info').html('Error occured.')
 		},
 		complete: () => {
 			console.log('Complete')
@@ -37,7 +37,7 @@ const get_data = async (file) => {
 	}
 
 	if (['xlsx', 'xls'].indexOf(suffix(file.name)) != -1) {
-		console.log('Not supported yet.')
+		$('#status_info').html('Not supported yet.')
 	} else {
 		return file.text()
 	}
