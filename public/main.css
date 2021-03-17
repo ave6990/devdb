@@ -18,6 +18,29 @@ main {
 	padding: 20px;
 }
 
+nav {
+	background: #555;
+	color: #eee;
+}
+
+nav ul {
+	margin: 0;
+}
+
+nav li {
+	display: inline;
+	padding-right: 15px;
+}
+
+nav a:link, nav a:visited {
+	color: #eee;
+	text-decoration: none;
+}
+
+nav a:hover {
+	background: #333;
+}
+
 footer {
 	text-align: center;
 }

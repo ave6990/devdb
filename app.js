@@ -1,8 +1,10 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const multer = require('multer')
 const config = require('./config.js')
 const fgis = require('./routes/fgis.js')
 const ggs = require('./routes/ggs.js')
+const conditions = require('./routes/conditions.js')
 
 const port = 3300
 
@@ -32,14 +34,20 @@ app.use(bodyParser.json({type: 'application/json'}))
 ////	client.close()
 //})
 
+const urlencodedParser = bodyParser.urlencoded({extended: false})
+const upload = multer({dest: 'uploads'})
 app.get('/', fgis.getMain)
 app.get('/ggs', ggs)
 app.route('/from_fgis')
 	.get(fgis.readResults)
 	.post(fgis.readFilteredResults)
 app.route('/upload')
-	.get(fgis.uploadCSVPage)
-	.post(fgis.uploadCSV)
+	.get(fgis.uploadFilePage)
+	.post(upload.single('input_file'), fgis.uploadFile)
+app.route('/conditions')
+	.get(conditions.read)
+	.post(urlencodedParser, conditions.write)
+	.put(conditions.update)
 
 app.listen(port, () => {
 	console.log(`App started at port: ${port}`)

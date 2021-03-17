@@ -49,7 +49,7 @@ const readFilteredResults = async (req, res) => {
 	res.send(data)
 }
 
-const uploadCSVPage = (req, res) => {
+const uploadFilePage = (req, res) => {
 	// get /upload
 	let content = pug.renderFile('./views/upload.pug')
 	res.render('index', {title: 'Выгрузка данных в БД',
@@ -57,25 +57,24 @@ const uploadCSVPage = (req, res) => {
 		content: content})
 }
 
-const uploadCSV = async (req, res) => {
+const uploadFile = async (req, res) => {
 	// post /upload
-	try {
-		const data = await csvParse(req.body.csv)
-		res.sennd(data)
-	} catch (err) {
-		console.log('An error has occured')
-		console.log(err)
-	}
-//	db.collection(req.body.name) .insertMany(data, (err, response) => {
-//		if (err) {
-//			console.log('error!!!!!!!!!')
+//	try {
+//		const data = await csvParse(req.body.csv)
+//		res.sennd(data)
+//	} catch (err) {
+//		console.log('An error has occured')
 //		console.log(err)
-//			res.send({'error': 'An error has occured'})
-//		} else {
-//			console.log(response.ops[0])
-//		}
-//	})
-//	res.redirect('/upload')
+//	}
+	const data = req.file
+
+	if (!data) {
+		console.log('Error')
+		res.send('Error')
+	} else {
+		console.log('File is uploaded')
+		res.send('File is uploaded')
+	}
 }
 
 const filterRecords = (data) => {
@@ -134,4 +133,4 @@ const csvParse = (data, delimiter=';') => {
 }
 
 module.exports = {getMain, updateDB, readResults, readFilteredResults,
-	uploadCSVPage, uploadCSV}
+	uploadFilePage, uploadFile}

@@ -1,0 +1,29 @@
+form(action='conditions' method='post' name='conditions')
+	div
+		label(class='label')
+			='Дата:'
+		input(type='text' name='tb_date')
+	div
+		label(class='label')
+			='Температура:'
+		input(type='text' name='tb_temperature')
+	div
+		label(class='label')
+			='Влажность:'
+		input(type='text' name='tb_hummidity')
+	div
+		label(class='label')
+			='Давление:'
+		input(type='text' name='tb_pressure')
+	div
+		label(class='label')
+			='Прочие условия:'
+		input(type='text' name='tb_other')
+	div
+		input(type='submit' name='btn_write' value='Записать', class='button')
+
+div(id='status_info')
+div(id='out_data')
+	p(id='upload_comment')
+
+script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')

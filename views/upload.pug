@@ -1,14 +1,13 @@
-form(name='upload')
+form(name='upload' method='post' enctype='multipart/form-data')
 	div
 		label
 			='Выберите файл:'
-		input(type='file' name='csv_file' id='file')
+		input(type='file' name='input_file' id='file')
 	div
-		input(type='button' name='btn_upload' value='Загурзить файл')
-	div(id='status_info')
-	div
-		table(id='out_data')
-script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+		input(type='submit' name='btn_upload' value='Загурзить файл')
+div(id='status_info')
+div(id='out_data')
+
 script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
 script(defer)
 	include ../public/upload.js
