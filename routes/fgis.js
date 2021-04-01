@@ -49,34 +49,6 @@ const readFilteredResults = async (req, res) => {
 	res.send(data)
 }
 
-const uploadFilePage = (req, res) => {
-	// get /upload
-	let content = pug.renderFile('./views/upload.pug')
-	res.render('index', {title: 'Выгрузка данных в БД',
-		header: 'Выгрузка данных в БД',
-		content: content})
-}
-
-const uploadFile = async (req, res) => {
-	// post /upload
-//	try {
-//		const data = await csvParse(req.body.csv)
-//		res.sennd(data)
-//	} catch (err) {
-//		console.log('An error has occured')
-//		console.log(err)
-//	}
-	const data = req.file
-
-	if (!data) {
-		console.log('Error')
-		res.send('Error')
-	} else {
-		console.log('File is uploaded')
-		res.send('File is uploaded')
-	}
-}
-
 const filterRecords = (data) => {
 	let temp_data = []
 	data.journal.forEach((rec) => {
@@ -132,5 +104,4 @@ const csvParse = (data, delimiter=';') => {
 	})
 }
 
-module.exports = {getMain, updateDB, readResults, readFilteredResults,
-	uploadFilePage, uploadFile}
+module.exports = {getMain, updateDB, readResults, readFilteredResults}

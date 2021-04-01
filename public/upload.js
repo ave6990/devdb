@@ -1,44 +1,40 @@
-const form = document.forms.upload
-const button = form.elements.btn_upload
+//$(document).ready(() => {
+//	$('#upload_form').submit = ( () => {
+//		const file = document.getElementById('file').files[0]
+//		$(this).ajaxSubmit({
+//			error: (err) => {
+//				$('#status_info').empty().text('An error has occured.')
+//			},
+//			success: (res) => {
+//				$('#status_info').empty().text(res)
+//			},
+//		})
+//	})
+//	return false
+//})
 
-button.onclick = async () => {
-	const file = document.getElementById('file').files[0]
-	const data = await get_data(file)
-//	const db_listbox = $('#db_listbox')
-//	const db_name = db_listbox[db_listbox.selectedIndex].value
-
-	$.ajax({
-		url: 'upload',
-		method: 'POST',
-		cache: false,
-		contentType: 'application/json',
-		encoding: 'utf-8',
-		data: JSON.stringify({
-			name: file.name,
-			csv: data
-		}),
-		success: (data) => {
-			$('#status_info').html('Successfull upload.')
-			console.log(data)
-		},
-		error: (err) => {
-			$('#status_info').html('Error occured.')
-		},
-		complete: () => {
-			console.log('Complete')
-		}
-	})
-}
-
-const get_data = async (file) => {
-	const suffix = (name) => {
-		const s_name = name.split('.')
-		return s_name[s_name.length - 1]
-	}
-
-	if (['xlsx', 'xls'].indexOf(suffix(file.name)) != -1) {
-		$('#status_info').html('Not supported yet.')
-	} else {
-		return file.text()
-	}
-}
+//$('#btn_upload').click( async () => {
+//	let fdata = new FormData()
+//	const file = $('#input_file')[0].files[0]
+//	fdata.append('uploadFile', file)
+//	$('#status_info').empty().text(file.name)
+//	let data = {
+//		file: fdata,
+//		name: file.name,
+//	}
+//
+//	$.ajax({
+//		url: 'upload',
+//		data: JSON.stringify(data),
+//		cache: false,
+//		contentType: false,
+//		processData: false,
+//		method: 'POST',
+//		success: (data) => {
+//			$('#status_info').empty().text('Successfull uploaded!.')
+//		},
+//		error: (err) => {
+//			$('#status_info').empty().text('Error!!!.')
+//		},
+//	})
+//})

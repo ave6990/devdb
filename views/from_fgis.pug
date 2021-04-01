@@ -1,31 +1,31 @@
-form(name='from_fgis')
+form(name='from_fgis' id='from_fgis')
 	div
 		label(class='label')
 			='Организация поверитель:'
-		input(type='text' name='tb_organisation' value='оренбургский')
+		input(type='text' name='tb_organisation' id='tb_organisation' value='оренбургский')
 	div
 		label(class='label')
 			='Год поверки:'
-		input(type='text' name='tb_verification_year' value='2021')
+		input(type='text' name='tb_verification_year' id='tb_verification_year' value='2021')
 	div
 		label(class='label')
 			='Регистрационный номер СИ:'
-		input(type='text' name='tb_mi_type_number')
+		input(type='text' name='tb_mi_type_number' id='tb_mi_type_number')
 	div
 		label(class='label')
 			='Заводской номер СИ:'
-		input(type='text' name='tb_mi_serial_number')
+		input(type='text' name='tb_mi_serial_number' id='tb_mi_serial_number')
 	div
-		input(type='file' name='csv_file' id='file')
+		input(type='file' name='csv_file' id='input_file')
 	div
-		input(type='button' name='btn_from_fgis' value='Загурзить данные из ФГИС', class='button')
-		input(type='button' name='btn_back' value='<<' class='button')
-		input(name='tb_page', id='page_num')
+		input(type='button' name='btn_search' id='btn_search' value='Загурзить данные из ФГИС', class='button')
+		input(type='button' name='btn_back' id='btn_back' value='<<' class='button')
+		input(name='tb_page', id='tb_page')
 		label(id='lbl_page')
-		input(type='button' name='btn_forward' value='>>' class='button')
+		input(type='button' name='btn_forward' id='btn_forward' value='>>' class='button')
 
+div(id='status_info')
 div(id='out_data')
-	p(id='upload_comment')
 	
 script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
 script(defer)

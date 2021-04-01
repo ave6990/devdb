@@ -1,10 +1,10 @@
-form(name='upload' method='post' enctype='multipart/form-data')
+form(name='upload' id='upload_form' method='post' enctype='multipart/form-data')
 	div
 		label
 			='Выберите файл:'
-		input(type='file' name='input_file' id='file')
+		input(type='file' name='input_file' id='input_file')
 	div
-		input(type='submit' name='btn_upload' value='Загурзить файл')
+		input(type='submit' name='sub_upload' value='Загурзить файл')
 div(id='status_info')
 div(id='out_data')
 

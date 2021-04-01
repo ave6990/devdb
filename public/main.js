@@ -15,6 +15,10 @@ const items = {
 		url: 'upload',
 		title: 'Загрузка файлов на сервер',
 	},
+	calc: {
+		url: 'calc',
+		title: 'Расчет СКО',
+	},
 }
 
 for (key in items) {

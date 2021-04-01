@@ -1,0 +1,19 @@
+doctype html
+
+html
+	head
+		title='Page is not found!'
+		script(src='https://code.jquery.com/jquery-3.5.1.min.js')
+		style
+			include ../public/main.css
+	body
+		header
+			h1='Page is not found! Error: 404'
+		nav(id='menu')
+			ul(id='menu_items')
+		main
+			| !{content}
+		footer
+			copyright="ave6990@ya.ru 2021"
+script(defer)
+	include ../public/main.js
