@@ -1,0 +1,25 @@
+section(id='in_data')
+	div
+		label(class='label')
+			='Номер ГРСИ:'
+		input(type='text' id='tb_mi_type_number')
+	div
+		label(class='label')
+			='Тип СИ:'
+		input(type='text' id='tb_mi_type')
+	div
+		button(id='btn_search')
+			='Загурзить данные из ФГИС'
+		button(id='btn_back')
+			='<<'
+		input(id='tb_page')
+		label(id='lbl_page' class='label')
+		button(id='btn_forward')
+			='>>'
+
+section(id='status')
+section(id='out_data')
+	
+script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
+script(defer)
+	include ../public/from_fgis.js

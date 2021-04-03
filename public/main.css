@@ -9,19 +9,18 @@ body {
 	font: 18pt sans-serif;
 }
 
-header {
-	padding: 10px;
-	color: #034769;
+/*header {*/
+/*	padding: 10px;*/
+/*	color: #034769;*/
 /*	color: #fafafa;*/
-	background: #3ca0d0;
-	
-}
+/*	background: #3ca0d0;*/
+/*}*/
 
 main {
 	padding: 20px;
 }
 
-nav, footer {
+nav, footer, header {
 	padding: 6px;
 	background: #034769;
 	color: #fafafa;
@@ -48,6 +47,10 @@ nav li:hover {
 	background: #086fa1;
 }
 
+#lbl_page {
+	display: inline;
+}
+
 footer {
 	text-align: center;
 }
@@ -63,7 +66,7 @@ h1 {
 	min-width: 30px;
 }
 
-input, select {
+input, select, button {
 	margin: 5px;
 	font-size: 14pt;
 	min-width: 150px;
@@ -86,8 +89,9 @@ label {
 	display: block;
 }
 
-.button {
+button {
 	font-size: 16pt;
+	color: #222;	
 /*	background: #fff;*/
 	min-width: 30px;
 }

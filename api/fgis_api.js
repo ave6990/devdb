@@ -10,6 +10,26 @@ const verificationResults = async (filter_obj) => {
 	}
 }
 
+const registryRecords = async (filter_obj) => {
+	try {
+		const url = getUrl('https://fgis.gost.ru/fundmetrology/api/registry/4/data', filter_obj)
+		const res = await axios.get(url)
+		return res.data.result
+	} catch (err) {
+		consol.log('fgis_api.js error!!!')
+	}
+}
+
+const registryRecord = async (id) => {
+	try {
+		const res = await axios.get(`https://fgis.gost.ru/fundmetrology/api/registry/4/items/${id}/data`)
+		return res.data.result
+	} catch (err) {
+		console.log('fgis_api.js error!!!')
+		console.log(err)
+	}
+}
+
 const allRecords = async (filter_obj) => {
 	try {
 		let rows = 10
@@ -43,5 +63,5 @@ const getUrl = (url, filter_obj) => {
 	return url
 }
 
-module.exports = {verificationResults}
-module.exports.test = { verificationResults, getUrl, allRecords }
+module.exports = {verificationResults, registryRecords, registryRecord}
+module.exports.test = { verificationResults, registryRecords, getUrl, allRecords }

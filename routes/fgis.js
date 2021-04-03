@@ -105,3 +105,4 @@ const csvParse = (data, delimiter=';') => {
 }
 
 module.exports = {getMain, updateDB, readResults, readFilteredResults}
+
