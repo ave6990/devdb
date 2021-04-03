@@ -16,7 +16,7 @@ const registryRecords = async (filter_obj) => {
 		const res = await axios.get(url)
 		return res.data.result
 	} catch (err) {
-		consol.log('fgis_api.js error!!!')
+		console.log('fgis_api.js error!!!')
 	}
 }
 

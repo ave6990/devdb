@@ -1,10 +1,10 @@
 const fgis = require('../api/fgis_api')
 
 const getData = async () => {
-	let res = [1,2 ,3]
+	let res = []
 	const filter_obj = {
-		pageNumber: 10000,
-		pageSize: 3,
+		pageNumber: 1,
+		pageSize: 5,
 		orgID: 'CURRENT_ORG',
 	}
 	const data = await fgis.registryRecords(filter_obj)
@@ -75,7 +75,10 @@ const parseData = (fields) => {
 
 const f = async () => {
 	const data = await getData()
-	console.log(data[0])
+	console.log(data)
+//	for (const item of data) {
+//		console.log(item)
+//	}
 }
 
 f()
