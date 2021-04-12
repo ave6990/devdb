@@ -1,0 +1,48 @@
+const pug = require('pug')
+const mongoose = require('mongoose')
+const xlsx = require('xlsx')
+const reg = require('../models/mi_registry')
+const jsonToAOA = require('../lib/aoa').jsonToAOA
+
+const readRecords = async (req, res) => {
+	// get /mi_registry
+	let content = pug.renderFile('./views/mi_registry.pug')
+	res.render('index', {title: 'Реестр СИ',
+		header: 'Реестр СИ',
+		content: content})
+}
+
+const searchRecords = async (req, res) => {
+	// post /mi_registry
+	let query = {}
+	let res_data = {}
+
+	if (req.body.registry_number) {
+		query['registry_number'] = req.body.registry_number
+	} else if (req.body.type) {
+		query['types'] = req.body.type
+	}
+
+	try {
+dfss//		res_data.total_count = await reg.find({}).countDocuments()
+
+		res_data.data = await new Promise( (resolve, reject) => {
+			reg.find(query)
+			.skip(req.body.skip)
+			.limit(req.body.limit)
+			.exec( (err, data) => {
+				if (err) {
+					reject(err)
+				}
+				resolve(data)
+			})
+		} )
+	} catch (err) {
+		console.log('Error occured: routes/mi_registry.js')
+		console.log(err)
+	}
+
+	res.send(res_data)
+}
+
+module.exports = { readRecords, searchRecords }

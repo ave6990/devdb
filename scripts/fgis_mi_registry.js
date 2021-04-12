@@ -1,86 +1,46 @@
-const fgis = require('../api/fgis_api')
+const mongoose = require('mongoose')
+const MIRegistry = require('../models/mi_registry')
+const fgis = require('../api/fgis_mi_registry_api')
+const config = require('../config')
 
-const getData = async () => {
+const url = `mongodb://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.db}`
+const options = {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+}
+
+mongoose.connect(url, options)
+
+const readData = async (page_size = 20) => {
+	let last_page = 3
 	let res = []
-	const filter_obj = {
-		pageNumber: 1,
-		pageSize: 5,
-		orgID: 'CURRENT_ORG',
-	}
-	const data = await fgis.registryRecords(filter_obj)
-	for (const [i, item] of data.items.entries()) {
-		const record = await fgis.registryRecord(item.id)
-		res[i] = parseData(extractFields(record))
-	}
-	return res
-}
-
-const extractFields = (record) => {
-	let res = []
-	for (const section of record.sections) {
-		res.push(...section.fields)
-	}
-	return res
-}
-
-const getValue = (fields, name) => {
-	const vals = fields.filter( (field) => {
-		return field.name == name
-	} )
-	if (vals.length > 0) {
-		return vals[0].value
-	} else {
-		return undefined
-	}
-}
-
-const getObjects = (value, data_fields, fgis_fields) => {
-	let manufacturer_obj = []
-	for (const [i, fields] of value.entries()) {
-		obj = {}
-		for (const [i, field] of data_fields.entries()) {
-			obj[field] = getValue(fields.fields, fgis_fields[i])
+	for (let i = 1; i <= last_page; i++) {
+		const data = await fgis.getPage(i, page_size)
+		if (i == 1) {
+			last_page = parseInt(data.total_count / page_size) + 1
 		}
-		manufacturer_obj[i] = obj
+		let percent = Math.round(parseFloat(i / last_page) * 10000) / 100
+		console.log(`Getting ${i} page of ${last_page} [${percent} %]`)
+		writeData(data.data)
 	}
-	return manufacturer_obj
+	return true
 }
 
-const parseData = (fields) => {
-	const data = {}
-	const data_fields = ['registry_number', 'name', 'type',
-		'manufacturer_first', 'manufacturer', 'type_description',
-		'verification_document', 'procedure', 'info', 'certificate_life',
-		'serial_number', 'verification_interval', 'periodic_verification',
-		'interval_years', 'interval_months', 'status']
-	const fgis_fields = ['foei:NumberSI', 'foei:NameSI', 'foei:DesignationSI',
-		'foei:ManufacturerTotalSI', 'foei:SI2_assoc', 'foei:DescriptionSI',
-		'foei:MethodVerifSI', 'foei:ProcedSI', 'foei:SvedenSI',
-		'foei:CertificateLifeSI', 'foei:FactoryNumSI', 'foei:MPISI',
-		'foei:NextVerifSI', 'foei:YearSI', 'foei:MonthsSI', 'foei:StatusSI']
-	const data_manufacturer_fields = ['country', 'location', 'notice', 'name']
-	const fgis_manufacturer_fields = ['foei:CountrySI', 'foei:SettlementSI',
-		'foei:UvedSI', 'foei:ManufacturerSI']
-	for( const [i, field] of data_fields.entries()) {
-		if (field == 'manufacturer') {
-			let manufacturer = getValue(fields, fgis_fields[i])
-			data[field] = getObjects(manufacturer, data_manufacturer_fields,
-				fgis_manufacturer_fields)
+const writeData = (in_data) => {
+	MIRegistry.insertMany(in_data, (err, data) => {
+		let message = ''
+
+		if (err) {
+			message = 'Error!!!'
+			console.log(err)
 		} else {
-			data[field] = getValue(fields, fgis_fields[i])
+			message = 'Successfull saved to database!'
 		}
-	}
-	return data
+		console.log(message)
+	} )
 }
 
-const f = async () => {
-	const data = await getData()
-	console.log(data)
-//	for (const item of data) {
-//		console.log(item)
-//	}
-}
+readData(500)
+//mongoose.connection.close()
 
-f()
-
-module.exports = { getData }
+module.exports = { readData, writeData }

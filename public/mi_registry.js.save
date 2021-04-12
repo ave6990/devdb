@@ -1,0 +1,84 @@
+const config = {
+	records_count: 0,
+	rows_count: 20,
+	page_num: 0,
+	pages_count: 0,
+}
+
+$(document).ready( () => {
+	$('#record').hide()
+	getRecords()
+
+	$('#btn_forward').click(async () => {
+		if (config.rows_count < config.records_count && config.page_num * config.rows_count < config.records_count) {
+			console.log('Process next page')
+			config.page_num += 1
+			$('#btn_search').onclick()
+			showPageNum()
+		}
+	} )
+
+	$('#btn_previous').click(async () => {
+
+	} )
+
+	$('#btn_back').click(async () => {
+		$('#record').hide()
+	} )
+
+	$('#tb_page').change(async () => {
+		let num = parseInt($('#tb_page').val())
+		let pages = parseInt(config.records_count / config.rows_count) + 1
+
+		if (num < 1) num = 1
+		if (num > pages) num = pages
+
+		config.page_num = num - 1
+		$('#btn_search').click()
+		showPageNum()
+	} )
+
+	$('#btn_search').click(async () => {
+		
+	} )
+})
+
+const getRecords = () => {
+	$.ajax( {
+		url: 'mi_registry',
+		method: 'POST',
+		cache: false,
+		contentType: 'application/json',
+		encoding: 'utf-8',
+		data: JSON.stringify( {
+			query: {
+				skip: config.page_num * config.rows_count,
+				limit: config.rows_count,
+				registry_number: $('#registry_number').val(),
+				type: $('#type').val(),
+			},
+		} ),
+		success: async (data) => {
+			$('#status').html(data.total_count)dsfsdsa
+		},
+		error: (err) => { $('#status').html('Ошибка обращения к 
+			БД') console.log('Error occured: 
+			public/mi_registry.js')
+		},
+	} )
+}
+
+const showPageNum = () => {
+	$('#tb_page').val(config.page_num + 1)
+	$('#lbl_page').html(` из ${parseInt(config.records_count / config.rows_count) + 1}`)
+}
+
+const renderXLSX = async (data) => {
+	let result
+	let records = await data.fgis.docs
+	const workSheet = await XLSX.utils.aoa_to_sheet(jsonToAOA(data.fgis.docs))
+	const table = await XLSX.utils.sheet_to_html(workSheet)
+	$('#upload_comment').html(`Найдено ${data.fgis.numFound} записей.`)
+	$('#out_data').html(table)
+}
+

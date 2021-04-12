@@ -7,9 +7,8 @@ const fgis = require('./routes/fgis.js')
 const upload_route = require('./routes/upload.js')
 const ggs = require('./routes/ggs.js')
 const conditions = require('./routes/conditions.js')
-const calc = require('./routes/calc.js')
-
-const port = 3300
+const mcalc = require('./routes/mcalc.js')
+const mi_registry = require('./routes/mi_registry.js')
 
 const app = express()
 app.set('view engine', 'pug')
@@ -17,7 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.text())
 app.use(bodyParser.json({type: 'application/json'}))
 
-const url = `mongodb://${config.user}:${config.password}@${config.host}:${config.port}/${config.db}`
+const url = `mongodb://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.db}`
 const options = {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -40,12 +39,15 @@ app.route('/conditions')
 	.get(conditions.getConditions)
 	.post(conditions.postCondition)
 	.put(conditions.updateCondition)
-app.route('/calc')
-	.get(calc.getCalc)
-	.post(calc.calculate)
+app.route('/mcalc')
+	.get(mcalc.getCalc)
+	.post(mcalc.calculate)
+app.route('/mi_registry')
+	.get(mi_registry.readRecords)
+	.post(mi_registry.searchRecords)
 
-app.listen(port, () => {
-	console.log(`App started at port: ${port}`)
+app.listen(config.app.port, () => {
+	console.log(`App started at port: ${config.app.port}`)
 })
 
 // for testing app

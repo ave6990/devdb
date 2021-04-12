@@ -8,16 +8,16 @@ const items = {
 		title: 'Условия микроклимата',
 	},
 	from_fgis: {
-		url: 'from_fgis',
-		title: 'Данные из ФИГС',
+		url: 'mi_registry',
+		title: 'Реестр СИ',
 	},
 	upload: {
 		url: 'upload',
 		title: 'Загрузка файлов на сервер',
 	},
 	calc: {
-		url: 'calc',
-		title: 'Расчет СКО',
+		url: 'mcalc',
+		title: 'Метролог',
 	},
 }
 

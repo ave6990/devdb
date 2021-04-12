@@ -1,4 +1,4 @@
-const config = {
+const db = {
 	user: 'admin',
 	password: 'pass',
 	host: 'localhost',
@@ -6,4 +6,8 @@ const config = {
 	db: 'devices',
 }
 
-module.exports = config
+const app = {
+	port: 3300,
+}
+
+module.exports = { db, app }

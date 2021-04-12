@@ -18,7 +18,14 @@ body {
 
 main {
 	padding: 20px;
+/*	float:left;*/
+/*	width: 65%;*/
 }
+
+/*nav {*/
+/*	float: left;*/
+/*	width: 30%;*/
+/*}*/
 
 nav, footer, header {
 	padding: 6px;
@@ -62,7 +69,7 @@ h1 {
 }
 
 #tb_page {
-	width: 30px;
+	width: 60px;
 	min-width: 30px;
 }
 
@@ -108,7 +115,11 @@ td {
 	font-size: 12pt;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #222222;
+	border-color: #086fa1;
 	padding: 1px;
 	margin: 0px;
+}
+
+.clear_both {
+	clear: both;
 }
