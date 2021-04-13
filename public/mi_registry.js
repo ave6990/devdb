@@ -10,7 +10,7 @@ $(document).ready( () => {
 	getRecords()
 
 	$('#btn_forward').click(async () => {
-		if (config.rows_count < config.records_count && config.page_num * config.rows_count < config.records_count) {
+		if (config.rows_count < config.records_count && (config.page_num + 1) * config.rows_count < config.records_count) {
 			console.log('Process next page')
 			config.page_num += 1
 			getRecords()
@@ -27,6 +27,7 @@ $(document).ready( () => {
 
 	$('#btn_back').click(async () => {
 		$('#record').hide()
+		$('#records').show()
 	} )
 
 	$('#tb_page').change(async () => {
@@ -49,10 +50,6 @@ $(document).ready( () => {
 	$('#type').change( () => {
 		config.page_num = 0
 		getRecords()
-	} )
-
-	$('#records_status').click( () => {
-		console.log('clicked_tb')
 	} )
 })
 
@@ -80,8 +77,16 @@ const getRecords = () => {
 				['registry_number', 'name', 'types', 'manufacturer_total', 'fgis_id'],
 				['Номер ГРСИ', 'Наименование СИ', 'Тип СИ', 'Производитель', 'Ссылка ФГИС']
 			)
-			const table = await XLSX.utils.sheet_to_html(await XLSX.utils.aoa_to_sheet(records))
-			$('#records_table').empty().html(table)
+			const table = await createTable(records, 'records_table')
+			$('#records_table_div').empty().html(table)
+			$('#records_table td').dblclick( (e) => {
+				const t = e.target || e.srcElement
+				const row_number = parseInt($(t).attr('id').slice(5)) - 2
+				console.info('Clicked row: ', row_number)
+				if (row_number >= 0) {
+					createRecordTable(data.data[row_number])
+				}
+			} )
 			showPageNum()
 		},
 		error: (err) => {
@@ -90,6 +95,61 @@ const getRecords = () => {
 		},
 	} )
 	showPageNum()
+}
+
+const createTable = async (data, table_id) => {
+	// it use the XLSX library yet
+	const doc = await XLSX.utils.sheet_to_html(await XLSX.utils.aoa_to_sheet(data))
+	// This code extract the table from html document.
+	const table = (new DOMParser())
+		.parseFromString(doc, 'text/html').body
+		.getElementsByTagName('table')[0]
+	table.id = table_id
+	return table
+}
+
+const createRecordTable = (data) => {
+	const titles = {
+		'fgis_id': 'Ссылка ФИФ ОЕИ',
+		'registry_number': 'Номер ГРСИ',
+		'name': 'Наименование',
+		'types': 'Тип СИ',
+		'manufacturer_total': 'Производитель',
+		'manufacturer': 'Производитель массив',
+		'type_description': 'Описание типа СИ',
+		'verification_document': 'Методика поверки',
+		'procedure': 'Процедура',
+		'mi_info': 'Сведения о типе СИ',
+		'certificate_life': 'Срок действия',
+		'serial_number': 'Зав. номер',
+		'verification_interval': 'МПИ',
+		'periodic_verification': 'Периодическая поверка',
+		'interval_years': 'МПИ, лет',
+		'interval_months': 'МПИ, мес.',
+		'mi_status': 'Статус СИ',
+		'publication_date': 'Дата публикации',
+		'record_number': 'Номер записи',
+		'party_verification': 'Поверка партии',
+		'status': 'Статус',
+		'sort_key': 'Ключ сортировки',
+	}
+
+	const fields = ['registry_number', 'mi_status', 'name', 'types',
+		'manufacturer_total', 'procedure', 'type_description', 'verification_document',
+		'periodic_verification', 'verification_interval', 'mi_info', 'serial_number', 'certificate_life',
+		'party_verification', 'status', 'publication_date', 'record_number', 'fgis_id']
+
+	let rows = ''
+
+	for (const item of fields) {
+		rows = `${rows}<tr><td class='gray'>${titles[item]}</td><td>${data[item]}</td></tr>`
+	}
+
+	table = `<table id='record_table'>${rows}</table>`
+
+	$('#record_table_div').empty().html(table)
+	$('#records').hide()
+	$('#record').show()
 }
 
 const showPageNum = () => {

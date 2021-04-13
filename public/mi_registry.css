@@ -10,3 +10,7 @@ input {
 .clear_both {
 	clear: both;
 }
+
+.gray {
+	background: #f3f3f3;
+}

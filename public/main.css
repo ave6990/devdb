@@ -54,10 +54,6 @@ nav li:hover {
 	background: #086fa1;
 }
 
-#lbl_page {
-	display: inline;
-}
-
 footer {
 	text-align: center;
 }
@@ -84,8 +80,8 @@ input, select, button {
 }
 
 .label {
-	display: inline-block;
-	width: 400px;
+	display: inline;
+/*	width: 400px;*/
 }
 
 input .field {
@@ -116,7 +112,7 @@ td {
 	border-width: 1px;
 	border-style: solid;
 	border-color: #086fa1;
-	padding: 1px;
+	padding: 3px;
 	margin: 0px;
 }
 

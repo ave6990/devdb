@@ -28,15 +28,16 @@ const searchRecords = async (req, res) => {
 			reg.find(query)
 			.skip(req.body.skip)
 			.limit(req.body.limit)
+//			Need much more memory.
 //			.sort({ registry_number: 1 })
-			.select( {
-				_id: 0,
-				registry_number: 1,
-				name: 1,
-				types: 1,
-				manufacturer_total: 1,
-				fgis_id: 1,
-			} )
+//			.select( {
+//				_id: 0,
+//				registry_number: 1,
+//				name: 1,
+//				types: 1,
+//				manufacturer_total: 1,
+//				fgis_id: 1,
+//			} )
 			.exec( (err, data) => {
 				if (err) {
 					reject(err)
