@@ -98,7 +98,7 @@ const parseData = (fields) => {
 			let str = getValue(fields, field.name)
 			data[data_fields[field.name]] = dateLib.toDate(str)
 		} else {
-			data[data_fields[field.name]] = getValue(fields, field.name)
+			data[data_fields[field.name]].value = getValue(fields, field.name)
 		}
 	}
 	return data

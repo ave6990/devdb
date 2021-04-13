@@ -31,7 +31,7 @@ nav, footer, header {
 	padding: 6px;
 	background: #034769;
 	color: #fafafa;
-	border: 2px solid #086fa1;
+/*	border: 2px solid #086fa1;*/
 }
 
 nav ul {
@@ -107,7 +107,11 @@ table {
 	overflow: scroll;
 }
 
-td {
+thead {
+	background: #f1f1f1;
+}
+
+td, th {
 	font-size: 12pt;
 	border-width: 1px;
 	border-style: solid;

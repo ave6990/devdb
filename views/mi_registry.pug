@@ -1,5 +1,5 @@
 style
-	include ../public/mi_registry.css
+	include ../public/styles/mi_registry.css
 section(id='record')
 	header
 		='Сведения о записи Реестра СИ'
@@ -32,6 +32,8 @@ section(id='records')
 	div(id='records_table_div')
 script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
 script(defer)
-	include ../lib/aoa.js
+	include ../lib/ui.js
+script(defer)
+	include ../lib/date.js
 script(defer)
 	include ../public/mi_registry.js
