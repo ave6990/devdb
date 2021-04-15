@@ -37,12 +37,16 @@ const getPage = async (page, page_size = 20) => {
 	return res_data
 }
 
-const getValue = (fields, name) => {
+const getValue = (fields, name, link = false) => {
 	const vals = fields.filter( (field) => {
 		return field.name == name
 	} )
 	if (vals.length > 0) {
-		return vals[0].value
+		if (link) {
+			return vals[0].link
+		} else {
+			return vals[0].value
+		}
 	} else {
 		return undefined
 	}
@@ -97,8 +101,10 @@ const parseData = (fields) => {
 		} else if (field.name == 'foei:date' || field.name == 'foei:CertificateLifeSI') {
 			let str = getValue(fields, field.name)
 			data[data_fields[field.name]] = dateLib.toDate(str)
+		} else if (['foei:DescriptionSI', 'foei:MethodVerifSI'].indexOf(field.name) >= 0) {
+			data[data_fields[field.name]] = getValue(fields, field.name, true)
 		} else {
-			data[data_fields[field.name]].value = getValue(fields, field.name)
+			data[data_fields[field.name]] = getValue(fields, field.name)
 		}
 	}
 	return data

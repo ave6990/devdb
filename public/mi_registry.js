@@ -11,7 +11,6 @@ $(document).ready( () => {
 
 	$('#btn_forward').click(async () => {
 		if (config.rows_count < config.records_count && (config.page_num + 1) * config.rows_count < config.records_count) {
-			console.log('Process next page')
 			config.page_num += 1
 			getRecords()
 		}
@@ -19,7 +18,6 @@ $(document).ready( () => {
 
 	$('#btn_previous').click(async () => {
 		if (config.rows_count < config.records_count && config.page_num > 0) {
-			console.log('Process previous page')
 			config.page_num -= 1
 			getRecords()
 		}
@@ -31,7 +29,6 @@ $(document).ready( () => {
 	} )
 
 	$('#tb_page').change(async () => {
-		console.log(`Page number changed to ${$('#tb_page').val()}`)
 		let num = parseInt($('#tb_page').val())
 		let pages = parseInt(config.records_count / config.rows_count) + 1
 
@@ -71,13 +68,18 @@ const getRecords = () => {
 			$('#records_status').html(`Записей в БД: ${data.total_count}`)
 			for (rec of data.data) {
 				rec.types = rec.types.join('; ').split(',').join('; ')
-				rec.publication_date = dateToString(new Date(rec.publication_date))
-				console.log(rec.publication_date)
-				rec.certificate_life = dateToString(new Date(rec.certificate_life))
-				rec.fgis_id = `https://fgis.gost.ru/fundmetrology/registry/4/items/${rec.fgis_id}`
+				rec.publication_date = toString(new Date(rec.publication_date))
+				rec.certificate_life = toString(new Date(rec.certificate_life))
+				rec.fgis_id = `<a href=https://fgis.gost.ru/fundmetrology/registry/4/items/${rec.fgis_id} target='_blank'>${rec.fgis_id}</a>`
+				if (rec.type_description != undefined) {
+					rec.type_description = `<a href=https://fgis.gost.ru/fundmetrology${rec.type_description} target='_blank'>${rec.registry_number}.pdf</a>`
+				}
+				if (rec.verification_document != undefined) {
+					rec.verification_document = `<a href=https://fgis.gost.ru/fundmetrology${rec.verification_document} target='_blank'>${rec.registry_number}-mp.pdf</a>`
+				}
 			}
 			// jsonToTabel() from lib/ui.js
-			const table = jsonToTable(data.data, {
+			const table = ui.jsonToTable(data.data, {
 					registry_number: 'Номер ГРСИ',
 					name: 'Наименование',
 					types: 'Тип СИ',
@@ -86,13 +88,13 @@ const getRecords = () => {
 				},
 				'records_table')
 			$('#records_table_div').empty().html(table)
-			$('#records_table td').dblclick( (e) => {
-				const t = e.target || e.srcElement
-				const row_number = parseInt($(t).parent().attr('id').slice(4))
-				if (row_number >= 0) {
-					createRecordTable(data.data[row_number])
-				}
-			} )
+
+			if (/Android|webOS|iPhone|iPad/i.test(navigator.userAgent)) {
+				$('#records_table td').click(readRegistryRecord(data.data)
+			} else {
+				$('#records_table td').dblclick(readRegistryRecord(data.data)
+			}
+
 			showPageNum()
 		},
 		error: (err) => {
@@ -101,6 +103,16 @@ const getRecords = () => {
 		},
 	} )
 	showPageNum()
+}
+
+const readRegistryRecord = (data) => {
+	return (e) => {
+		const t = e.target || e.srcElement
+		const row_number = parseInt($(t).parent().attr('id').slice(4))
+		if (row_number >= 0) {
+			createRecordTable(data.data[row_number])
+		}
+	}
 }
 
 const createRecordTable = (data) => {
@@ -141,14 +153,4 @@ const createRecordTable = (data) => {
 const showPageNum = () => {
 	$('#tb_page').val(config.page_num + 1)
 	$('#lbl_page').html(` из ${parseInt(config.records_count / config.rows_count) + 1}`)
-}
-
-const dateToString = (date, delimiter='.') => {
-	const day = firstZero(date.getDate())
-	if (isNaN(day)) {
-		return undefined
-	}
-	const month = firstZero(date.getMonth() + 1)
-	const year = date.getFullYear()
-	return [day, month, year].join(delimiter)
 }

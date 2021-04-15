@@ -18,7 +18,8 @@ const searchRecords = async (req, res) => {
 
 	if (req.body.registry_number) {
 		query['registry_number'] = new RegExp(`.*${req.body.registry_number}.*`, 'i')
-	} else if (req.body.type) {
+	}
+	if (req.body.type) {
 		query['types'] = new RegExp(`.*${req.body.type}.*`, 'i')
 	}
 
@@ -46,8 +47,10 @@ const searchRecords = async (req, res) => {
 			} )
 		} )
 	} catch (err) {
-		console.log('Error occured: routes/mi_registry.js')
-		console.log(err)
+		console.group()
+		console.error('Error occured: routes/mi_registry.js')
+		console.error(err)
+		console.groupEnd()
 	}
 
 	res.send(res_data)

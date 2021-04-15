@@ -16,13 +16,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.text())
 app.use(bodyParser.json({type: 'application/json'}))
 
-const url = `mongodb://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.db}`
-const options = {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-}
-
-mongoose.connect(url, options)
+mongoose.connect(config.db.uri, config.db.options)
 
 const urlencodedParser = bodyParser.urlencoded({extended: false})
 const upload = multer({dest: 'uploads'})

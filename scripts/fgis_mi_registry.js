@@ -1,15 +1,11 @@
+// This script let download the mesurement instsrument database from FIF.
+
 const mongoose = require('mongoose')
 const MIRegistry = require('../models/mi_registry')
 const fgis = require('../api/fgis_mi_registry_api')
 const config = require('../config')
 
-const url = `mongodb://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.db}`
-const options = {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-}
-
-mongoose.connect(url, options)
+mongoose.connect(config.db.uri, config.db.options)
 
 const readData = async (page_size = 20) => {
 	let last_page = 3
