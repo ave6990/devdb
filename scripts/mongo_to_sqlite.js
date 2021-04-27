@@ -1,19 +1,23 @@
-const sqlite = require('sqlite').verbose()
+const sqlite = require('sqlite3').verbose()
 const mongoose = require('mongoose')
 const reg = require('../models/mi_registry')
 const config = require('../config')
+const date = require('../lib/date')
 
-mongoose.connect(config.db.uri, config.db.options)
+let mongo_db = mongoose.connect(config.db.uri, config.db.options)
 
-let db = new sqlite.Database('./mi_registry.db')
+let sql_db = new sqlite.Database('./metrolog.db')
 
-const readData = async () => {
-	const records = await new Promise( (resolve, reject) => {
-		reg.find({})
-		.select( {
-			_id: 0,
-			manufacturer: 0,
-		})
+const readData = async (model, selected_fields, page, limit) => {
+	let result = {}
+
+	result.total_count = await model.find({}).countDocuments()
+
+	result.records = await new Promise( (resolve, reject) => {
+		model.find({})
+		.skip(page * limit)
+		.limit(limit)
+		.select(selected_fields)
 		.exec( (err, data) => {
 			if (err) {
 				reject(err)
@@ -23,24 +27,29 @@ const readData = async () => {
 		} )
 	} )
 
-	return records
+	return result
 }
 
-const createQuery = (db, table_name, fields_obj) => {
-	let query = ''
+const createQuery = (table_name, fields_obj) => {
+	let query = Object.keys(fields_obj).map( (field) => {
+		return `${field} ${fields_obj[field]}`
+	} ).join(', ')
 
-	for (const field of Object.keys(fields_obj)) {
-		query = `${field} ${fields_obj[field]}, `
-	}
-
-	query = `CREATE TABLE ${table_name}(${query})`
+	query = `CREATE TABLE ${table_name}(id integer primary key autoincrement, ${query})`
 
 	return query
 }
 
-const insertQuery = async (data) => {
-	let query = data.map((record) => '?').join(', ')
-	query = `(${placeholders})`
+const insertQuery = (table_name, fields) => {
+	// @@debug: where is obj._doc from? What is it obj???
+	const columns = Object.keys(fields).join(', ')
+	const values = Object.keys(fields).map((item) => `?`).join(', ')
+
+	return `INSERT INTO ${table_name} (${columns}) VALUES (${values})`
+}
+
+const selectQuery = async () => {
+	let query = ''
 }
 
 const fields = {
@@ -66,4 +75,67 @@ const fields = {
 	status: 'text',
 }
 
-createTable(db, 'mi_registry', fields)
+const createTable = (sqlite_db, table_name, fields) => {
+	let sql = createQuery(table_name, fields)
+	console.log(sql, '\n')
+	sqlite_db.run(sql)
+	console.info(`Table ${table_name} is created.`)
+}
+
+const addOptFields = (obj, fields) => {
+	let res = {}
+	for (const item of fields) {
+		if (Object.keys(obj).indexOf(item) >= 0) {
+			if (['certificate_life', 'publication_date'].indexOf(item) >= 0) {
+				res[item] = date.toString(obj[item])
+			} else {
+				res[item] = obj[item]
+			}
+		} else {
+			res[item] = 'undefined'
+		}
+	}
+
+	return res
+}
+
+const copyData = async (model, selected_fields, sql_db, fields) => {
+	const page_size = 1000
+
+	console.info('Copy the data from mongodb to sqlite3.\n')
+	let data = await readData(model, selected_fields, 1, 1)
+	const sql = insertQuery('mi_registry', fields)
+	console.info(sql, '\n')
+	const total_count = parseInt(data.total_count / page_size) + 1
+
+	for (let i = 0; i < total_count; i++) {
+		data = await readData(model, selected_fields, i, page_size)
+		for (const [j, record] of data.records.entries()) {
+			const full_record = addOptFields(record._doc, Object.keys(fields))
+			sql_db.run(sql, Object.values(full_record), (err) => {
+				if (err) {
+					console.error('Error occured: script/mongo_to_sqlite.js')
+					console.error(err, '\n')
+				}
+			} )
+		}
+		let percent = Math.round(parseFloat((i + 1) / total_count) * 10000) / 100
+		console.info(`\tCopy the ${i} page of ${total_count} pages [ ${percent} % ].`)
+	}
+
+}
+
+const selected_fields = {
+	_id: 0,
+	manufacturer: 0,
+}
+
+const main = async () => {
+	createTable(sql_db, 'mi_registry', fields)
+	copyData(reg, selected_fields, sql_db, fields)
+}
+
+main()
+
+//mongoose.connection.close()
+//sql_db.close()

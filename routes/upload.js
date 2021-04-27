@@ -1,7 +1,7 @@
 const pug = require('pug')
 
 const uploadFilePage = (req, res) => {
-	// get /upload
+	/** get /upload */
 	let content = pug.renderFile('./views/upload.pug')
 	res.render('index', {title: 'Выгрузка данных в БД',
 		header: 'Выгрузка данных в БД',
@@ -9,7 +9,7 @@ const uploadFilePage = (req, res) => {
 }
 
 const uploadFile = async (req, res) => {
-	// post /upload
+	/** post /upload */
 	console.log('Uploading...')
 	try {
 		const data = await req.file

@@ -14,9 +14,8 @@ const calculate = async (req, res) => {
 }
 
 const sko = (values) => {
-	let n = values.length
-	let nc = 0
-	nc = values.reduce((res, val) => {
+	const n = values.length
+	const nc = values.reduce((res, val) => {
 		return Number(res) + Number(val)
 	}) / n
 	let vals = values.map((val) => {
