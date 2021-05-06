@@ -1,39 +1,39 @@
 style
-	include ../public/styles/mi_registry.css
+    include ../public/styles/mi_registry.css
 section(id='record')
-	header
-		='Сведения о записи Реестра СИ'
-	div
-		button(id='btn_back')
-			='Вернуться к записям Реестра СИ'
-	div(id='record_table_div')
+    header
+        ='Сведения о записи Реестра СИ'
+    div
+        button(id='btn_back')
+            ='Вернуться к записям Реестра СИ'
+    div(id='record_table_div')
 section(id='records')
-	header
-		='Записи Реестра СИ'
-	div(id='column1')
-		label
-			='Номер ГРСИ'
-		input(id='registry_number')
-	div(id='column2')
-		label
-			='Тип СИ'
-		input(id='type')
-	div(class='clear_both')
-	div
-		button(id='btn_previous')
-			='<<'
-		label(class='label')
-			='Страница'
-		input(id='tb_page')
-		label(id='lbl_page' class='label')
-		button(id='btn_forward')
-			='>>'
-		label(id='records_status' class='label')
-	div(id='records_table_div')
+    header
+        ='Записи Реестра СИ'
+    div(id='column1')
+        label
+            ='Номер ГРСИ'
+        input(id='registry_number')
+    div(id='column2')
+        label
+            ='Тип СИ'
+        input(id='type')
+    div(class='clear_both')
+    div
+        button(id='btn_previous')
+            ='<<'
+        label(class='label')
+            ='Страница'
+        input(id='tb_page')
+        label(id='lbl_page' class='label')
+        button(id='btn_forward')
+            ='>>'
+        label(id='records_status' class='label')
+    div(id='records_table_div')
 script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
 script(defer)
-	include ../lib/ui.js
+    include ../lib/ui.js
 script(defer)
-	include ../lib/date.js
+    include ../lib/date.js
 script(defer)
-	include ../public/mi_registry.js
+    include ../public/mi_registry.js
