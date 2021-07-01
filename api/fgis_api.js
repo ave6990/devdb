@@ -1,5 +1,5 @@
-const axios = require('axios')
-const urlLib = require('../lib/url')
+import axios from 'axios'
+import * as urlLib from '../lib/url.js'
 
 const verificationResults = async (filter_obj) => {
 	try {
@@ -27,5 +27,5 @@ const allRecords = async (filter_obj) => {
 	}
 }
 
-module.exports = { verificationResults }
-module.exports.test = { verificationResults, allRecords }
+export { verificationResults }
+//module.exports.test = { verificationResults, allRecords }

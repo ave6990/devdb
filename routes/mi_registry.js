@@ -1,7 +1,7 @@
-const pug = require('pug')
-const mongoose = require('mongoose')
-const xlsx = require('xlsx')
-const reg = require('../models/mi_registry')
+import pug from 'pug'
+import mongoose from 'mongoose'
+import xlsx from 'xlsx'
+import { MiRegystry as reg } from '../models/mi_registry.js'
 
 const readRecords = async (req, res) => {
     /** get /mi_registry */
@@ -56,4 +56,4 @@ const searchRecords = async (req, res) => {
     res.send(res_data)
 }
 
-module.exports = { readRecords, searchRecords }
+export { readRecords, searchRecords }

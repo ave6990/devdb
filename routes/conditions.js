@@ -1,6 +1,6 @@
-const pug = require('pug')
-const mongoose = require('mongoose')
-const Condition = require('../models/conditions.js')
+import pug from 'pug'
+import mongoose from 'mongoose'
+import { Condition } from '../models/conditions.js'
 
 const getConditions = (req, res) => {
 	let content = pug.renderFile('./views/conditions.pug')
@@ -32,4 +32,4 @@ const updateCondition = (req, res) => {
 
 }
 
-module.exports = { getConditions, postCondition, updateCondition }
+export { getConditions, postCondition, updateCondition }

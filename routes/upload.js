@@ -1,4 +1,4 @@
-const pug = require('pug')
+import pug from 'pug'
 
 const uploadFilePage = (req, res) => {
 	/** get /upload */
@@ -23,4 +23,4 @@ const uploadFile = async (req, res) => {
 	res.redirect('/upload')
 }
 
-module.exports = {uploadFilePage, uploadFile}
+export {uploadFilePage, uploadFile}

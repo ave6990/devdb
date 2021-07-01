@@ -1,9 +1,10 @@
-const sqlite = require('sqlite3').verbose()
-const mongoose = require('mongoose')
-const reg = require('../models/mi_registry')
-const config = require('../config')
-const date = require('../lib/date')
-const sqlq = requery('../lib/sql-query')
+import sqlite3 from 'sqlite3'
+const sqlite = sqlite3.verbose()
+import mongoose from 'mongoose'
+import * as reg from '../models/mi_registry.js'
+import * as config from '../config.js'
+import * as date from '../lib/date.js'
+import * as sqlq from '../lib/sql-query.js'
 
 let mongo_db = mongoose.connect(config.db.uri, config.db.options)
 

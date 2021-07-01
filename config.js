@@ -18,4 +18,4 @@ const app = {
 	port: 3300,
 }
 
-module.exports = { db, app }
+export { db, app }

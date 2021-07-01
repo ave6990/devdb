@@ -1,9 +1,9 @@
 // This script let download the mesurement instsrument database from FIF.
 
-const mongoose = require('mongoose')
-const MIRegistry = require('../models/mi_registry')
-const fgis = require('../api/fgis_mi_registry_api')
-const config = require('../config')
+import mongoose from 'mongoose'
+import { MIRegistry } form '../models/mi_registry.js'
+import { getPage } from '../api/fgis_mi_registry_api.js'
+import * as config from '../config.js'
 
 mongoose.connect(config.db.uri, config.db.options)
 
@@ -11,7 +11,7 @@ const readData = async (page_size = 20) => {
 	let last_page = 3
 	let res = []
 	for (let i = 1; i <= last_page; i++) {
-		const data = await fgis.getPage(i, page_size)
+		const data = await getPage(i, page_size)
 		if (i == 1) {
 			last_page = parseInt(data.total_count / page_size) + 1
 		}
@@ -39,4 +39,4 @@ const writeData = (in_data) => {
 readData(500)
 //mongoose.connection.close()
 
-module.exports = { readData, writeData }
+export { readData, writeData }

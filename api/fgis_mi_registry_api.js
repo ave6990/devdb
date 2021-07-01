@@ -1,6 +1,6 @@
-const axios = require('axios')
-const urlLib = require('../lib/url')
-const dateLib = require('../lib/date')
+import axios 'axios'
+import * as urlLib from '../lib/url.js'
+import * as dateLib '../lib/date.js'
 
 const registryRecords = async (filter_obj) => {
 	try {
@@ -110,4 +110,4 @@ const parseData = (fields) => {
 	return data
 }
 
-module.exports = {getPage}
+export { getPage }

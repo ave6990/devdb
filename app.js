@@ -1,14 +1,14 @@
-const express = require('express')
-const bodyParser = require('body-parser')
-const multer = require('multer')
-const mongoose = require('mongoose')
-const config = require('./config.js')
-const fgis = require('./routes/fgis.js')
-const upload_route = require('./routes/upload.js')
-const ggs = require('./routes/ggs.js')
-const conditions = require('./routes/conditions.js')
-const mcalc = require('./routes/mcalc.js')
-const mi_registry = require('./routes/mi_registry.js')
+import express from 'express'
+import bodyParser from 'body-parser'
+import multer from 'multer'
+import mongoose from 'mongoose'
+import * as config from './config.js'
+import * as fgis from './routes/fgis.js'
+import * as upload_route from './routes/upload.js'
+import * as ggs from './routes/ggs.js'
+import * as conditions from './routes/conditions.js'
+import * as mcalc from './routes/mcalc.js'
+import * as mi_registry from './routes/mi_registry.js'
 
 const app = express()
 app.set('view engine', 'pug')
@@ -44,5 +44,4 @@ app.listen(config.app.port, () => {
 	console.log(`App started at port: ${config.app.port}`)
 })
 
-// for testing app
-module.exports = app
+export { app }

@@ -1,4 +1,4 @@
-const pug = require('pug')
+import pug from 'pug'
 
 const GGSCalc = (req, res) => {
 	let content = pug.renderFile('./views/ggs.pug')
@@ -7,4 +7,4 @@ const GGSCalc = (req, res) => {
 		content: content})
 }
 
-module.exports = GGSCalc
+export { GGSCalc }

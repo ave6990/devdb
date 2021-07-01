@@ -1,4 +1,4 @@
-const pug = require('pug')
+import pug from 'pug'
 
 const getCalc = (req, res) => {
 	let content = pug.renderFile('./views/mcalc.pug')
@@ -26,4 +26,4 @@ const sko = (values) => {
 	}) / (n - 1)) ** 0.5
 }
 
-module.exports = { getCalc, calculate }
+export { getCalc, calculate }

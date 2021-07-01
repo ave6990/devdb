@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const ConditionSchema = new Schema(
@@ -15,4 +15,6 @@ const ConditionSchema = new Schema(
 	},
 )
 
-module.exports = mongoose.model('condition', ConditionSchema)
+const Condition = mongoose.model('condition', ConditionSchema)
+
+export { Condition }

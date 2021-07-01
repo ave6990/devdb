@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
 const MIRegistrySchema = new Schema(
@@ -35,4 +35,6 @@ const MIRegistrySchema = new Schema(
 	},
 )
 
-module.exports = mongoose.model('mi_registry', MIRegistrySchema)
+const MIRegistry = mongoose.model('mi_registry', MIRegistrySchema)
+
+export { MIRegistry }

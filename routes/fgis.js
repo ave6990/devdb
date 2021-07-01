@@ -1,6 +1,6 @@
-const pug = require('pug')
-const csv = require('csv')
-const fgis_api = require('../api/fgis_api')
+import pug from 'pug'
+import csv from 'csv'
+import * as fgis_api from '../api/fgis_api.js'
 
 const getMain = (req, res) => {
 	res.render('index', {title: 'Metrolog',
@@ -104,5 +104,5 @@ const csvParse = (data, delimiter=';') => {
 	})
 }
 
-module.exports = {getMain, updateDB, readResults, readFilteredResults}
+export { getMain, updateDB, readResults, readFilteredResults }
 
