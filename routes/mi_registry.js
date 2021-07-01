@@ -1,7 +1,7 @@
 import pug from 'pug'
 import mongoose from 'mongoose'
 import xlsx from 'xlsx'
-import { MiRegystry as reg } from '../models/mi_registry.js'
+import { MIRegistry as reg } from '../models/mi_registry.js'
 
 const readRecords = async (req, res) => {
     /** get /mi_registry */

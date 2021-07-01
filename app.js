@@ -22,7 +22,7 @@ const urlencodedParser = bodyParser.urlencoded({extended: false})
 const upload = multer({dest: 'uploads'})
 
 app.get('/', fgis.getMain)
-app.get('/ggs', ggs)
+app.get('/ggs', ggs.GGSCalc)
 app.route('/from_fgis')
 	.get(fgis.readResults)
 	.post(fgis.readFilteredResults)
