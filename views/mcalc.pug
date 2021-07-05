@@ -1,13 +1,71 @@
+nav
+    button(id='btn_export')
+        ='Экспорт данных'
+    button(id='btn_add_mi')
+        ='Добавить СИ'
+    button(id='del_add_mi')
+        ='Удалить СИ'
+form(id='filter')
+    header
+        ='Фильтр'
+    main
+        div
+            label
+                ='Дата'
+            span 
+                ='c '
+            input(type='date' id='filter_date_start')
+            span
+                =' по '
+            input(type='date' id='filter_date_end')
+        div(class='flex_form')
+            div
+                label
+                    ='Номер счета'
+                input(type='text' id='filter_count_number')
+            div
+                label
+                    ='Номер ГРСИ'
+                input(type='text' id='filter_mi_registry_number')
+            div
+                label
+                    ='Зав. №'
+                input(type='text' id='filter_mi_number')
+            div
+                label
+                    ='Собственник'
+                input(type='text' id='filter_mi_owner')
+            div
+                label
+                    ='Вид поверки'
+                select(id='filter_verification_type')
+                    option(default)
+                    option
+                        ='периодическая'
+                    option
+                        ='первичная'
+            div 
+                label
+                    ='Пригодность'
+                select(id='filter_applicability')
+                    option(default)
+                    option
+                        ='пригодно'
+                    option
+                        ='непригодно'
 section
-	header='Ввод данных'
-	div(id='in_data')
-	button(id='btn_save')
-		='Сохранить'
-section(id='status')
-section
-	header='Результаты'
-	div(id='out_data')
+    header='Результаты поверки'
+    p
+        ='Найдено записей: '
+    span(id='records_count')
+    div(id='pages_nav' class='flex_style')
+        button(id='btn_prev')
+            ='<<'
+        input(type='text' id='page_number' value=1)
+        button(id='btn_next')
+            ='>>'
+    section(id='records')
 
-script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
+
 script(defer)
-	include ../public/mcalc.js
+    include ../public/mcalc.js

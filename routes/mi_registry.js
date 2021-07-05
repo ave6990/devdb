@@ -3,16 +3,16 @@ import mongoose from 'mongoose'
 import xlsx from 'xlsx'
 import { MIRegistry as reg } from '../models/mi_registry.js'
 
+/** get /mi_registry */
 const readRecords = async (req, res) => {
-    /** get /mi_registry */
     let content = pug.renderFile('./views/mi_registry.pug')
     res.render('index', {title: 'Реестр СИ',
         header: 'Реестр СИ',
         content: content})
 }
 
+/** post /mi_registry */
 const searchRecords = async (req, res) => {
-    /** post /mi_registry */
     let query = {}
     let res_data = {}
 
@@ -29,7 +29,7 @@ const searchRecords = async (req, res) => {
             reg.find(query)
             .skip(req.body.skip)
             .limit(req.body.limit)
-            /** @debug: Need much more memory.
+            /** @debug Need much more memory.
             .sort({ registry_number: 1 })
             .select( {
                 _id: 0,

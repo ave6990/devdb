@@ -1,26 +1,31 @@
 const items = {
-	main: {
+	/*main: {
 		url: '/',
 		title: 'Главная',
 	},
 	conditions: {
 		url: 'conditions',
 		title: 'Условия микроклимата',
-	},
+	},*/
 	from_fgis: {
 		url: 'mi_registry',
 		title: 'Реестр СИ',
 	},
-	upload: {
+	/*upload: {
 		url: 'upload',
 		title: 'Загрузка файлов на сервер',
-	},
+	},*/
 	calc: {
-		url: 'mcalc',
+		url: '/',
 		title: 'Метролог',
 	},
 }
 
+const menu = document.getElementById('menu')
+
 for (key in items) {
-	$('#menu_items').append(`<li id='${key}'><a href='${items[key].url}'>${items[key].title}</a></li>`)
+    const a = document.createElement('a')
+    a.href = items[key].url
+    a.textContent = items[key].title
+    menu.append(a)
 }
