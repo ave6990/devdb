@@ -14,6 +14,7 @@ main {
 }
 
 section {
+    margin: 5px;
 }
 
 section header {
@@ -73,7 +74,7 @@ label {
     min-width: 30px;
 }
 
-input, select, button {
+input, select, button, textarea {
     margin: 5px;
     font-size: 12pt;
     min-width: 150px;
@@ -81,6 +82,11 @@ input, select, button {
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
 }
 
 button {
@@ -114,6 +120,11 @@ hr {
     border-color: #086fa1;
 }
 
+#main_section {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
 .selected_row {
     background: #afdefa;
 }
@@ -135,6 +146,11 @@ hr {
 
 .flex_form div {
     width: 220px;
+}
+
+#edit_section {
+    /*max-height: 50%;*/
+    overflow-y: scroll;
 }
 
 .grid_3c {

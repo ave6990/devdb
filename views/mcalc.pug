@@ -5,66 +5,130 @@ nav
         ='Добавить СИ'
     button(id='del_add_mi')
         ='Удалить СИ'
-form(id='filter')
-    header
-        ='Фильтр'
-    main
-        div
-            label
-                ='Дата'
-            span 
-                ='c '
-            input(type='date' id='filter_date_start')
-            span
-                =' по '
-            input(type='date' id='filter_date_end')
-        div(class='flex_form')
-            div
-                label
-                    ='Номер счета'
-                input(type='text' id='filter_count_number')
-            div
-                label
-                    ='Номер ГРСИ'
-                input(type='text' id='filter_mi_registry_number')
-            div
-                label
-                    ='Зав. №'
-                input(type='text' id='filter_mi_number')
-            div
-                label
-                    ='Собственник'
-                input(type='text' id='filter_mi_owner')
-            div
-                label
-                    ='Вид поверки'
-                select(id='filter_verification_type')
-                    option(default)
-                    option
-                        ='периодическая'
-                    option
-                        ='первичная'
-            div 
-                label
-                    ='Пригодность'
-                select(id='filter_applicability')
-                    option(default)
-                    option
-                        ='пригодно'
-                    option
-                        ='непригодно'
-section
-    header='Результаты поверки'
-    p
-        ='Найдено записей: '
-    span(id='records_count')
-    div(id='pages_nav' class='flex_style')
-        button(id='btn_prev')
-            ='<<'
-        input(type='text' id='page_number' value=1)
-        button(id='btn_next')
-            ='>>'
-    section(id='records')
+section(id='main_section')
+    section(id='edit_section')
+        section(id='verification_info')
+            header
+                ='Сведения о поверке'
+            main(class='flex_form')
+                div
+                    label(for='verification_date')
+                        ='Дата'
+                    input(type='date' id='verification_date')
+                div
+                    label(for='count_number')
+                        ='Номер счета'
+                    input(type='text' id='count_number')
+                div
+                    label(for='mi_owner')
+                        ='Собственник'
+                    input(list='lst_mi_owner' id='mi_owner')
+                    datalist(id='lst_mi_owner')
+                div
+                    label(for='verification_type')
+                        ='Вид поверки'
+                    select(id='verification_type')
+                        option(default)
+                            ='периодическая'
+                        option
+                            ='первичная'
+        section(id='mi_info') 
+            header
+                ='Данные СИ'
+            main(class='flex_form')
+                div
+                    label(for='mi_type_name')
+                        ='Наименование типа СИ'
+                    input(list='lst_mi_type_name' id='mi_type_name')
+                    datalist(id='lst_mi_type_name')
+                div
+                    label(for='mi_type')
+                        ='Тип, модификация СИ'
+                    input(type='text' id='mi_type')
+                div
+                    label(for='mi_manufacture_year')
+                        ='Год выпуска'
+                    input(type='text' id='mi_manufacture_year')
+                div
+                    label(for='mi_registry_number')
+                        ='Номер ГРСИ'
+                    input(type='text' id='mi_registry_number')
+                div
+                    label(for='mi_number')
+                        ='Зав. №'
+                    input(type='text' id='mi_number')
+                div 
+                    label(for='trouble_reason')
+                        ='Причина непригодности'
+                    input(list='lst_trouble_reason' id='trouble_reason')
+                    datalist(id='lst_trouble_reason')
+                 
+    section(id=data_section)
+        form(id='filter')
+            header
+                ='Фильтр'
+            main
+                div
+                    label(for='filter_date_start')
+                        ='Дата'
+                    span 
+                        ='c '
+                    input(type='date' id='filter_date_start')
+                    span
+                        =' по '
+                    input(type='date' id='filter_date_end')
+                div(class='flex_form')
+                    div
+                        label(for='filter_count_number')
+                            ='Номер счета'
+                        input(type='text' id='filter_count_number')
+                    div
+                        label(for='filter_mi_registry_number')
+                            ='Номер ГРСИ'
+                        input(type='text' id='filter_mi_registry_number')
+                    div
+                        label(for='filter_mi_number')
+                            ='Зав. №'
+                        input(type='text' id='filter_mi_number')
+                    div
+                        label(for='filter_mi_owner')
+                            ='Собственник'
+                        input(type='text' id='filter_mi_owner')
+                    div
+                        label(for='filter_verification_type')
+                            ='Вид поверки'
+                        select(id='filter_verification_type')
+                            option(default)
+                            option
+                                ='периодическая'
+                            option
+                                ='первичная'
+                    div 
+                        label(for='filter_applicability')
+                            ='Пригодность'
+                        select(id='filter_applicability')
+                            option(default)
+                            option
+                                ='пригодно'
+                            option
+                                ='непригодно'
+                button(id='btn_apply_filter')
+                    ='Применить'
+                button(id='btn_cancel_filter')
+                    ='Отменить'
+        section
+            header='Результаты поверки'
+            main
+                p
+                    ='Найдено записей: '
+                span(id='records_count')
+                div(id='pages_nav')
+                    button(id='btn_prev')
+                        ='<<'
+                    input(type='text' id='page_number' value=1)
+                    button(id='btn_next')
+                        ='>>'
+                section(id='records')
 
 
 script(defer)
