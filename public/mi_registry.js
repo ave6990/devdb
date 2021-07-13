@@ -110,7 +110,7 @@ const readRegistryRecord = (data) => {
         const t = e.target || e.srcElement
         const row_number = parseInt($(t).parent().attr('id').slice(4))
         if (row_number >= 0) {
-            createRecordTable(data.data[row_number])
+            createRecordTable(data[row_number])
         }
     }
 }
