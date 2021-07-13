@@ -146,7 +146,7 @@ const createRecordTable = (data) => {
         rows = `${rows}<tr><td class='gray'>${titles[item]}</td><td>${data[item]}</td></tr>`
     }
 
-    table = `<table id='record_table'>${rows}</table>`
+    let table = `<table id='record_table'>${rows}</table>`
 
     $('#record_table_div').empty().html(table)
     $('#records').hide()
