@@ -9,16 +9,18 @@ section(id='record')
     div(id='record_table_div')
 section(id='records')
     header
-        ='Записи Реестра СИ'
-    div(id='column1')
-        label
-            ='Номер ГРСИ'
-        input(id='registry_number')
-    div(id='column2')
-        label
-            ='Тип СИ'
-        input(id='type')
-    div(class='clear_both')
+        span(id='title')
+            ='Записи Реестра СИ'
+        span(id='records_status')
+    section(id='filter')
+        div
+            label
+                ='Номер ГРСИ'
+            input(id='registry_number')
+        div
+            label
+                ='Тип СИ'
+            input(id='type')
     div
         button(id='btn_previous')
             ='<<'
@@ -28,7 +30,6 @@ section(id='records')
         span(id='lbl_page')
         button(id='btn_forward')
             ='>>'
-        label(id='records_status' class='label')
     div(id='records_table_div')
 script(defer type='module')
     include ../public/mi_registry.js

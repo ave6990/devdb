@@ -8,12 +8,14 @@ body {
     color: #222;
     background: #fcfcfc;
     font: 12pt sans-serif;
-    /*display: grid;
-    grid-template-rows: auto 1fr auto;*/
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 main {
     margin: 10px;
+    flex-grow: 1;
 }
 
 section {
@@ -22,6 +24,7 @@ section {
 
 section header {
     font-size: 12pt;
+    border-radius: 10px;
 }
 
 form {
@@ -37,6 +40,10 @@ nav, footer, header {
 
 nav {
     display: flex;
+}
+
+main > nav {
+    border-radius: 10px;
 }
 
 nav a {
@@ -56,6 +63,7 @@ nav a:hover {
 
 footer {
     text-align: center;
+    flex-shrink: 0;
 }
 
 h1 {
