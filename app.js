@@ -12,6 +12,9 @@ import * as mi_registry from './routes/mi_registry.js'
 
 const app = express()
 app.set('view engine', 'pug')
+/* необходимо для использования `import` ES6 в `./public/*.js` */
+app.use(express.static('./public'))
+app.use(express.static('./lib'))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.text())
 app.use(bodyParser.json({type: 'application/json'}))

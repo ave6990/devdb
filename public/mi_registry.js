@@ -1,3 +1,6 @@
+import { jsonToTable } from './ui.js'
+import { toString } from './date.js'
+
 const config = {
     records_count: 0,
     rows_count: 20,
@@ -66,7 +69,7 @@ const getRecords = () => {
         success: async (data) => {
             config.records_count = data.total_count
             $('#records_status').html(`Записей в БД: ${data.total_count}`)
-            for (rec of data.data) {
+            for (const rec of data.data) {
                 rec.types = rec.types.join('; ').split(',').join('; ')
                 rec.publication_date = toString(new Date(rec.publication_date))
                 rec.certificate_life = toString(new Date(rec.certificate_life))
@@ -79,7 +82,7 @@ const getRecords = () => {
                 }
             }
             /** @see ave6990.github.io/lib/html-gen.js */
-            const table = ui.jsonToTable(data.data, {
+            const table = jsonToTable(data.data, {
                     registry_number: 'Номер ГРСИ',
                     name: 'Наименование',
                     types: 'Тип СИ',

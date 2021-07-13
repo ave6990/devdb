@@ -30,10 +30,5 @@ section(id='records')
             ='>>'
         label(id='records_status' class='label')
     div(id='records_table_div')
-script(lang='javascript' src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.min.js')
-script(defer)
-    include ../lib/ui.js
-script(defer)
-    include ../lib/date.js
-script(defer)
+script(defer type='module')
     include ../public/mi_registry.js

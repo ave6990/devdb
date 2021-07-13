@@ -1,10 +1,11 @@
+const ui = {
 /**
 * @description This function create a html table and fill it with the input data.
 * @param {Object} data - Input data.
 * @param {Object.<string, string>} fields - Data fields that need insert in the table.
 * @return {string} table - html code that represent the data table.
 */
-const jsonToTable = (data, fields, table_id, header = true, vertical_head = false) => {
+jsonToTable: (data, fields, table_id, header = true, vertical_head = false) => {
 	let rows = ''
 	let thead = ''
 	let tbody = ''
@@ -27,9 +28,9 @@ const jsonToTable = (data, fields, table_id, header = true, vertical_head = fals
 	const table = `<table id='${table_id}'>\n${thead}\n<tbody>${rows}\n</tbody>\n</table>`
 
 	return table
-}
+},
 
-const editableCells = (table_id) => {
+editableCells: (table_id) => {
 	$(`#${table_id} td`).click( (e) => {
 		const t = e.target || e.srcElement
 		const el_name = t.tagName.toLowerCase()
@@ -46,6 +47,7 @@ const editableCells = (table_id) => {
 			$(t).empty().html(new_val)
 		} )
 	} )
+},
 }
 
 //const createTable = async (data, parent_id, table_id, editable = false) => {
@@ -61,5 +63,3 @@ const editableCells = (table_id) => {
 //		editableCells(table_id)
 //	}
 //}
-
-export { jsonToTable }
