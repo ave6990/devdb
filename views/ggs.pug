@@ -25,6 +25,5 @@ form(name='calcForm')
 		label(for='qi_diluent' class='label')='Расход разбавителя, см<sup>3</sup>/мин:'
 		input(type='text' name='qi_diluent' disabled)
 	input(type='button' id='calcButton' value='Расчитать')
-script(defer)
-	include ../public/ggs/gases.js
-	include ../public/ggs/ggs.js
+script(defer type='module')
+	include ../public/ggs.js

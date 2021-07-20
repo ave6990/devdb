@@ -1,0 +1,36 @@
+section(id='input_date')
+    header
+        ='Исходные данные'
+    main
+        div
+            label(for='diluent')
+                ='Газ-разбавитель:'
+            select(id='diluent')
+                option(default)
+                    ='воздух'
+                option
+                    ='азот'
+        div
+            label(for='source_conc')
+                ='Концентрация исходной ГС, мг/м^3:'
+            input(type=text id='source_conc' pattern='\d+\.?\d*')
+        div
+            label(for='target_conc') 
+                ='Требуемая концентрация ГС на выходе, мг/м^3:'
+            input(type=text id='target_conc' pattern='\d+\.?\d*')
+        button(id='btn_calc')
+            ='Расчитать'
+section(id='result')
+    header
+        ='Результаты'
+    main
+        div
+            label(for='result_conc')
+                ='Расчетная концентрация ГС на выходе, мг/м^3:'
+            input(type=text id='result_conc' disabled)
+        div
+            label(for='valve_number')
+                ='Номера клапанов, которые нужно включить:'
+            input(type='text' id='valve_number' disabled)
+script(defer type='module')
+    include ../public/gs2000.js

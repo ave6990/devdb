@@ -1,11 +1,10 @@
-//import {gases} from './gases.js'
-//import {in_fields, out_fields} from './forms.js'
+import { gases } from '../gases.js'
 
 const form = document.forms.calcForm
 const gasList = form.elements.gas
 
 gases.forEach((item) => {
-	gasList.options[gasList.options.length] = new Option(text = `${item.name} (${item.formula})`, value = item.value)
+	gasList.options[gasList.options.length] = new Option(`${item.name} (${item.formula})`, item.value)
 })
 
 const calc_n = () => {

@@ -6,6 +6,7 @@ import * as config from './config.js'
 import * as fgis from './routes/fgis.js'
 import * as upload_route from './routes/upload.js'
 import * as ggs from './routes/ggs.js'
+import * as gs2000 from './routes/gs2000.js'
 import * as conditions from './routes/conditions.js'
 import * as mcalc from './routes/mcalc.js'
 import * as mi_registry from './routes/mi_registry.js'
@@ -26,6 +27,7 @@ const upload = multer({dest: 'uploads'})
 
 //app.get('/', fgis.getMain)
 app.get('/ggs', ggs.GGSCalc)
+app.get('/gs2000', gs2000.Calc)
 app.route('/from_fgis')
 	.get(fgis.readResults)
 	.post(fgis.readFilteredResults)

@@ -19,6 +19,14 @@ const items = {
 		url: '/',
 		title: 'Метролог',
 	},
+    /*ggs: {
+        url: 'ggs',
+        title: 'Расчет ГГС-03-03',
+    },*/
+    gs2000: {
+        url: 'gs2000',
+        title: 'Расчет ГС-2000',
+    },
 }
 
 const menu = document.getElementById('menu')
