@@ -12,11 +12,11 @@ section(id='input_date')
                     ='азот'
         div
             label(for='source_conc')
-                ='Концентрация исходной ГС, мг/м^3:'
+                ='Концентрация исходной ГС, млн-1:'
             input(type=text id='source_conc' pattern='\d+\.?\d*')
         div
             label(for='target_conc') 
-                ='Требуемая концентрация ГС на выходе, мг/м^3:'
+                ='Требуемая концентрация ГС на выходе, млн-1:'
             input(type=text id='target_conc' pattern='\d+\.?\d*')
         button(id='btn_calc')
             ='Расчитать'
@@ -26,7 +26,7 @@ section(id='result')
     main
         div
             label(for='result_conc')
-                ='Расчетная концентрация ГС на выходе, мг/м^3:'
+                ='Расчетная концентрация ГС на выходе, млн-1:'
             input(type=text id='result_conc' disabled)
         div
             label(for='valve_number')
