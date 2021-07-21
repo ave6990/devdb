@@ -18,51 +18,50 @@ const calculate = ({coeff, source_conc, target_conc}) => {
     let temp_res = target_conc
     let k = 0
     let k_list = []
-    let index_list = []
-    let index = 0
     let accuracy = 0.1
+    let temp_coeff = [...coeff]
 
-    while (Math.abs(res - target_conc) / target_conc > accuracy) {
-        k = getClosest(source_conc / temp_res, coeff)
-        console.info(k)
-        console.info(k_list.indexOf(k))
-        if (k_list.indexOf(k) >= 0) {
-            console.info(1)
-            index = coeff.indexOf(k)
-            if (index > 0) {
-            console.info(2)
-                k = coeff[index - 1]
-            } else {
-            console.info(3)
-                /* k_list.push(coeff[some_index]
-                * Рассчитать отклонение от заданной концентрации и
-                * найти дополнительный коэффициент
-                */
-                accuracy = 10000000
-            }
-        }
-
+    //while (Math.abs(res - target_conc) / target_conc > accuracy && temp_coeff.length > 1) {
+    while (res < target_conc && temp_coeff.length > 1) {
+        k = getClosest(source_conc / temp_res, temp_coeff)
         k_list.push(k)
+
         res = source_conc / calc_k(k_list)
 
-        if (res > target_conc && k_list.length > 0) {
-            index = coeff.indexOf(k_list.pop())
-            if (index > 0) {
-                k = coeff[index - 1]
-                k_list.push(k)
+        while (res > target_conc && k_list.length > 0 && temp_coeff.length > 1) {
+            const temp_k = k
+
+            k_list.splice(k_list.length - 1)
+            console.info(...k_list)
+            console.info(...temp_coeff)
+            temp_coeff.splice(temp_coeff.indexOf(k), 1)
+            k = getClosest(source_conc / temp_res, temp_coeff)
+            k_list.push(k)
+            res = source_conc / calc_k(k_list)
+            if (res > target_conc) {
+                k_list.splice(k_list.length - 1)
+                if (temp_coeff.length > 1) {
+                    k_list.push(temp_k)
+                }
+                if (k_list.length < 1) {
+                    k_list.push(coeff[0])
+                }
                 res = source_conc / calc_k(k_list)
             }
         }
-        temp_res = Math.abs(res - target_conc)
 
-        console.log({k: k_list, 
+
+        temp_res = Math.abs(res - target_conc)
+        temp_coeff.splice(temp_coeff.indexOf(k), 1)
+
+        console.log({k_list: k_list, 
             res: res,
             temp_res: temp_res,
-            k: k,
+            k: calc_k(k_list),
         })
     }
 
-    index_list = k_list.map( (val) => {
+    const index_list = k_list.map( (val) => {
         return coeff.indexOf(val)
     } )
 
