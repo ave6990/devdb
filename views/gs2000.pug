@@ -1,36 +1,88 @@
+style
+    include ../public/styles/gs2000.css
 section(id='input_date')
     header
         ='Исходные данные'
     main
         div
+            label(for='component')
+                ='Целевой компонент:'
+            select(id='component')
+                option(default value='none')
+                    ='не выбран'
+        div
             label(for='diluent')
                 ='Газ-разбавитель:'
             select(id='diluent')
-                option(default)
+                option(default value='air')
                     ='воздух'
-                option
+                option(value='n2')
                     ='азот'
         div
             label(for='source_conc')
-                ='Концентрация исходной ГС, млн-1:'
+                ='Концентрация исходной ГС:'
             input(type=text id='source_conc' pattern='\d+\.?\d*')
+            select(id='source_unit')
+                option(defualt value='ppm')
+                    ='ppm'
+                option(value='%')
+                    ='%'
         div
             label(for='target_conc') 
-                ='Требуемая концентрация ГС на выходе, млн-1:'
+                ='Требуемая концентрация ГС на выходе:'
             input(type=text id='target_conc' pattern='\d+\.?\d*')
+            select(id='target_unit')
+                option(default)
+                    ='ppm'
+                option
+                    ='%'
+                option
+                    = 'mg/m^3'
         button(id='btn_calc')
             ='Расчитать'
 section(id='result')
     header
         ='Результаты'
     main
+        label(for='valve_number')
+            ='Положение переключателей:'
+        div(id='valves')
+            div(class='valves')
+                label(for='v1') 1
+                input(type='checkbox' id='v1' class='toggle_button')
+            div(class='valves')
+                label(for='v2') 2
+                input(type='checkbox' id='v2' class='toggle_button')
+            div(class='valves')
+                label(for='v3') 3
+                input(type='checkbox' id='v3' class='toggle_button')
+            div(class='valves')
+                label(for='v4') 4
+                input(type='checkbox' id='v4' class='toggle_button')
+            div(class='valves')
+                label(for='v5') 5
+                input(type='checkbox' id='v5' class='toggle_button')
+            div(class='valves')
+                label(for='v6') 6
+                input(type='checkbox' id='v6' class='toggle_button')
+            div(class='valves')
+                label(for='v7') 7
+                input(type='checkbox' id='v7' class='toggle_button')
+            div(class='valves')
+                label(for='v8') 8
+                input(type='checkbox' id='v8' class='toggle_button')
+            div(class='valves')
+                label(for='v9') 9
+                input(type='checkbox' id='v9' class='toggle_button')
+            div(class='valves')
+                label(for='v10') 10
+                input(type='checkbox' id='v10' class='toggle_button')
         div
             label(for='result_conc')
-                ='Расчетная концентрация ГС на выходе, млн-1:'
+                ='Расчетная концентрация ГС на выходе:'
             input(type=text id='result_conc' disabled)
-        div
-            label(for='valve_number')
-                ='Номера клапанов, которые нужно включить:'
-            input(type='text' id='valve_number' disabled)
+    section
+        textarea(id='info' disabled)
+ 
 script(defer type='module')
     include ../public/gs2000.js
