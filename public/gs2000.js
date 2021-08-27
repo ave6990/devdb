@@ -10,12 +10,12 @@ const get_valves = () => {
     return valves
 }
 
-/* Массив переключателей клапанов */
+/** Массив переключателей клапанов */
 const valves = get_valves()
 
+/** Обработчик событий на переключатели. */
 valves.forEach( (valve) => {
     valve.addEventListener("change", (event) => {
-        //warning(' ')
         const states = read_valves_states()
         const in_data = readData()
         const out_data = reCalculate({coeff: in_data.coeff, 
@@ -30,6 +30,7 @@ valves.forEach( (valve) => {
     })
 })
 
+/** Коррекция расчета малых концентраций сероводорода согласно РЭ. */
 const h2sCorrection = ({conc, component}) => {
     if (component = 'H2S' && conc >= 0.005 && conc <= 0.01) {
         log(`H2S коррекция:\n\t${conc} + 0.00025`)
@@ -38,8 +39,8 @@ const h2sCorrection = ({conc, component}) => {
     return 0
 }
 
+/** Чтение и валидация концентрации исходной ГС. */
 const readSourceConc = () => {
-    //warning(' ')
     const source_unit = document.getElementById('source_unit').value
     let source_conc = parseFloat(document.getElementById('source_conc').value.replace(',', '.'))
     const component = document.getElementById('component').value
@@ -69,8 +70,8 @@ const readSourceConc = () => {
     return source_conc
 }
 
+/** Чтение и валидация целевой концентрации. */
 const readTargetConc = () => {
-    //warning(' ')
     const source_conc = readSourceConc()
     let target_unit = document.getElementById('target_unit').value
     const diluent = document.getElementById('diluent').value
@@ -110,7 +111,6 @@ const readTargetConc = () => {
 
         k = max_k
         document.getElementById('target_conc').value = max_conc
-        log(`\t${target_conc} ppm`)
         warning(`Концентрация ГС на выходе не может быть больше ${max_conc} ${target_unit}!`)
     }
     if (target_conc < min_conc) {
@@ -124,7 +124,6 @@ const readTargetConc = () => {
 
         k = min_k
         document.getElementById('target_conc').value = min_conc
-        log(`\t${target_conc} ppm`)
         warning(`Концентрация ГС на выходе не может быть меньше ${min_conc} ${target_unit}!`)
     }
 
@@ -170,8 +169,8 @@ const res_round = (val) => {
     return Math.round(val)
 }
 
+/** Чтение исходных данных. */
 const readData = () => {
-    //warning(' ')
     const diluent = document.getElementById('diluent').value
     const source_unit = document.getElementById('source_unit').value
     let target_unit = document.getElementById('target_unit').value
@@ -191,7 +190,6 @@ const readData = () => {
 }
 
 document.getElementById('btn_calc').addEventListener('click', (event) => {
-    //warning(' ')
     clear_valves()
     const in_data = readData()
     const out_data = calculate(in_data)
@@ -207,6 +205,7 @@ const warning = (message) => {
     log(`\nWARNING!!!:\n\t${message}\n`)
 }
 
+/** Вывод результата. */
 const displayResults = (data) => {
     log(`Расчетная концентрация:\n\t${data.conc} ppm`)
     data.conc = convertUnits(data)
@@ -217,6 +216,7 @@ const displayResults = (data) => {
     } )
 }
 
+/** Конвертация единиц величин. */
 const convertUnits = ({conc, target_unit, diluent, component}) => {
     if (target_unit == '%') {
         return conc / 10000
@@ -226,24 +226,28 @@ const convertUnits = ({conc, target_unit, diluent, component}) => {
     return conc
 }
 
+/** Сбросить положение переключателей. */
 const clear_valves = () => {
     valves.forEach( (valve) => {
         valve.checked = false
     })
 }
 
+/** Вывести сообщение в текстовое поле лога. */
 const log = (s) => {
     const textarea = document.getElementById('info')
     textarea.value += `\n${s}`
     textarea.scrollTop = textarea.scrollHeight
 }
 
+/** Очистить текстовое поле лога. */
 const clearLog = () => {
     document.getElementById('info').value = ''
 }
 
 document.getElementById('info').addEventListener('dblclick', clearLog)
 
+/** Прочитать положение переключателей. */
 const read_valves_states = () => {
     const active_valves = valves.map( (valve, i) => {
         if (valve.checked == true) {
