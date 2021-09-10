@@ -1,0 +1,35 @@
+section(id='filter')
+    header
+        ='Поиск'
+    main
+        label(for='year')
+            ='Год'
+        input(type='text' id='year')
+        label(for='organisation')
+            ='Организация'
+        input(type='text' id='organisation')
+        label(for='registry_number')
+            ='Номер Рееста'
+        input(type='text' id='registry_number')
+        label(for='serial_number')
+            ='Заводской номер'
+        input(type='text' id='serial_number')
+        button(id='btn_search')
+            ='Найти'
+section
+    header
+        ='Результаты'
+    main
+        section
+            p
+                ='Найдено: '
+            span(id='conunts')
+        section
+            button(id='btn_prev')
+                ="<<"
+            input(id='page_num')
+            button(id='btn_next')
+                =">>"
+        section(id='results')
+script(type='module' defer)
+    include ../public/arshin.js

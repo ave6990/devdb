@@ -10,6 +10,7 @@ import * as gs2000 from './routes/gs2000.js'
 import * as conditions from './routes/conditions.js'
 import * as mcalc from './routes/mcalc.js'
 import * as mi_registry from './routes/mi_registry.js'
+import * as arshin from './routes/arshin.js'
 
 const app = express()
 app.set('view engine', 'pug')
@@ -28,6 +29,7 @@ const upload = multer({dest: 'uploads'})
 //app.get('/', fgis.getMain)
 app.get('/ggs', ggs.GGSCalc)
 app.get('/gs2000', gs2000.Calc)
+app.get('/arshin', arshin.getMain)
 app.route('/from_fgis')
 	.get(fgis.readResults)
 	.post(fgis.readFilteredResults)
